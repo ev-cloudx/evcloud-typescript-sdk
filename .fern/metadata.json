@@ -1,0 +1,21 @@
+{
+    "cliVersion": "5.159.1",
+    "generatorName": "fernapi/fern-typescript-sdk",
+    "generatorVersion": "3.88.1",
+    "generatorConfig": {
+        "retainOriginalCasing": true,
+        "naming": {
+            "namespace": "Evcloud",
+            "client": "EvcloudClient",
+            "error": "EvcloudError",
+            "timeoutError": "EvcloudTimeoutError",
+            "environment": "EvcloudEnvironment"
+        }
+    },
+    "originGitCommit": "0a6d788b121581ef464170548694cc4320c812fe",
+    "originGitCommitIsDirty": false,
+    "invokedBy": "ci",
+    "requestedVersion": "0.1.0",
+    "ciProvider": "github",
+    "sdkVersion": "0.1.0"
+}

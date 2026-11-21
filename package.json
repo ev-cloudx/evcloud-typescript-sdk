@@ -1,0 +1,520 @@
+{
+    "name": "evcloud",
+    "version": "0.1.0",
+    "private": false,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ev-cloudx/evcloud-typescript-sdk.git"
+    },
+    "type": "commonjs",
+    "main": "./dist/cjs/index.js",
+    "module": "./dist/esm/index.mjs",
+    "types": "./dist/cjs/index.d.ts",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/esm/index.d.mts",
+                "default": "./dist/esm/index.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/index.d.ts",
+                "default": "./dist/cjs/index.js"
+            },
+            "default": "./dist/cjs/index.js"
+        },
+        "./health": {
+            "import": {
+                "types": "./dist/esm/api/resources/health/exports.d.mts",
+                "default": "./dist/esm/api/resources/health/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/health/exports.d.ts",
+                "default": "./dist/cjs/api/resources/health/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/health/exports.js"
+        },
+        "./cpo": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/exports.js"
+        },
+        "./cpo/cdrs": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/cdrs/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/cdrs/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/cdrs/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/cdrs/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/cdrs/exports.js"
+        },
+        "./cpo/chargePoints": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/chargePoints/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/chargePoints/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/chargePoints/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/chargePoints/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/chargePoints/exports.js"
+        },
+        "./cpo/connectors": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/connectors/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/connectors/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/connectors/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/connectors/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/connectors/exports.js"
+        },
+        "./cpo/evses": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/evses/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/evses/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/evses/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/evses/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/evses/exports.js"
+        },
+        "./cpo/health": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/health/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/health/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/health/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/health/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/health/exports.js"
+        },
+        "./cpo/locations": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/locations/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/locations/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/locations/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/locations/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/locations/exports.js"
+        },
+        "./cpo/sessions": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/sessions/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/sessions/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/sessions/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/sessions/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/sessions/exports.js"
+        },
+        "./cpo/tariffs": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/tariffs/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/tariffs/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/tariffs/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/tariffs/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/tariffs/exports.js"
+        },
+        "./emsp": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/exports.js"
+        },
+        "./emsp/health": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/health/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/health/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/health/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/health/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/health/exports.js"
+        },
+        "./emsp/locations": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/locations/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/locations/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/locations/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/locations/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/locations/exports.js"
+        },
+        "./emsp/networks": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/networks/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/networks/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/networks/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/networks/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/networks/exports.js"
+        },
+        "./emsp/empIdentities": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/empIdentities/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/empIdentities/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/empIdentities/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/empIdentities/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/empIdentities/exports.js"
+        },
+        "./emsp/tenant": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/tenant/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/tenant/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/tenant/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/tenant/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/tenant/exports.js"
+        },
+        "./emsp/tokenGroups": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/tokenGroups/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/tokenGroups/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/tokenGroups/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/tokenGroups/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/tokenGroups/exports.js"
+        },
+        "./emsp/tokens": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/tokens/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/tokens/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/tokens/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/tokens/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/tokens/exports.js"
+        },
+        "./emsp/evses": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/evses/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/evses/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/evses/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/evses/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/evses/exports.js"
+        },
+        "./emsp/tariffs": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/tariffs/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/tariffs/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/tariffs/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/tariffs/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/tariffs/exports.js"
+        },
+        "./emsp/chargers": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/chargers/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/chargers/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/chargers/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/chargers/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/chargers/exports.js"
+        },
+        "./emsp/commands": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/commands/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/commands/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/commands/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/commands/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/commands/exports.js"
+        },
+        "./emsp/sessions": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/sessions/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/sessions/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/sessions/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/sessions/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/sessions/exports.js"
+        },
+        "./emsp/cdrs": {
+            "import": {
+                "types": "./dist/esm/api/resources/emsp/resources/cdrs/exports.d.mts",
+                "default": "./dist/esm/api/resources/emsp/resources/cdrs/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/emsp/resources/cdrs/exports.d.ts",
+                "default": "./dist/cjs/api/resources/emsp/resources/cdrs/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/emsp/resources/cdrs/exports.js"
+        },
+        "./energy": {
+            "import": {
+                "types": "./dist/esm/api/resources/energy/exports.d.mts",
+                "default": "./dist/esm/api/resources/energy/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/energy/exports.d.ts",
+                "default": "./dist/cjs/api/resources/energy/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/energy/exports.js"
+        },
+        "./energy/controlRequests": {
+            "import": {
+                "types": "./dist/esm/api/resources/energy/resources/controlRequests/exports.d.mts",
+                "default": "./dist/esm/api/resources/energy/resources/controlRequests/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/energy/resources/controlRequests/exports.d.ts",
+                "default": "./dist/cjs/api/resources/energy/resources/controlRequests/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/energy/resources/controlRequests/exports.js"
+        },
+        "./energy/health": {
+            "import": {
+                "types": "./dist/esm/api/resources/energy/resources/health/exports.d.mts",
+                "default": "./dist/esm/api/resources/energy/resources/health/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/energy/resources/health/exports.d.ts",
+                "default": "./dist/cjs/api/resources/energy/resources/health/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/energy/resources/health/exports.js"
+        },
+        "./energy/powerMeasurements": {
+            "import": {
+                "types": "./dist/esm/api/resources/energy/resources/powerMeasurements/exports.d.mts",
+                "default": "./dist/esm/api/resources/energy/resources/powerMeasurements/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/energy/resources/powerMeasurements/exports.d.ts",
+                "default": "./dist/cjs/api/resources/energy/resources/powerMeasurements/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/energy/resources/powerMeasurements/exports.js"
+        },
+        "./ocpi": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/exports.js"
+        },
+        "./ocpi/invites": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/resources/invites/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/resources/invites/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/resources/invites/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/resources/invites/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/resources/invites/exports.js"
+        },
+        "./ocpi/partners": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/resources/partners/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/resources/partners/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/resources/partners/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/resources/partners/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/resources/partners/exports.js"
+        },
+        "./ocpi/credentials": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/resources/credentials/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/resources/credentials/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/resources/credentials/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/resources/credentials/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/resources/credentials/exports.js"
+        },
+        "./ocpi/cpoData": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/resources/cpoData/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/resources/cpoData/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/resources/cpoData/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/resources/cpoData/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/resources/cpoData/exports.js"
+        },
+        "./ocpi/emsp": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/resources/emsp/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/resources/emsp/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/resources/emsp/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/resources/emsp/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/resources/emsp/exports.js"
+        },
+        "./ocpi/sync": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/resources/sync/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/resources/sync/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/resources/sync/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/resources/sync/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/resources/sync/exports.js"
+        },
+        "./webhooks": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhooks/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhooks/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhooks/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhooks/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhooks/exports.js"
+        },
+        "./webhooks/events": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhooks/resources/events/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhooks/resources/events/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhooks/resources/events/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhooks/resources/events/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhooks/resources/events/exports.js"
+        },
+        "./webhooks/health": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhooks/resources/health/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhooks/resources/health/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhooks/resources/health/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhooks/resources/health/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhooks/resources/health/exports.js"
+        },
+        "./webhooks/deliveries": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhooks/resources/deliveries/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhooks/resources/deliveries/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhooks/resources/deliveries/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhooks/resources/deliveries/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhooks/resources/deliveries/exports.js"
+        },
+        "./webhooks/eventTypes": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhooks/resources/eventTypes/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhooks/resources/eventTypes/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhooks/resources/eventTypes/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhooks/resources/eventTypes/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhooks/resources/eventTypes/exports.js"
+        },
+        "./webhooks/endpoints": {
+            "import": {
+                "types": "./dist/esm/api/resources/webhooks/resources/endpoints/exports.d.mts",
+                "default": "./dist/esm/api/resources/webhooks/resources/endpoints/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/webhooks/resources/endpoints/exports.d.ts",
+                "default": "./dist/cjs/api/resources/webhooks/resources/endpoints/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/webhooks/resources/endpoints/exports.js"
+        },
+        "./package.json": "./package.json"
+    },
+    "files": [
+        "dist",
+        "reference.md",
+        "README.md",
+        "LICENSE"
+    ],
+    "scripts": {
+        "format": "biome format --write --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "format:check": "biome format --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "lint": "biome lint --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "lint:fix": "biome lint --fix --unsafe --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "check": "biome check --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "check:fix": "biome check --fix --unsafe --skip-parse-errors --no-errors-on-unmatched --max-diagnostics=none",
+        "build": "pnpm build:cjs && pnpm build:esm",
+        "build:cjs": "tsc --project ./tsconfig.cjs.json",
+        "build:esm": "tsc --project ./tsconfig.esm.json && node scripts/rename-to-esm-files.js dist/esm",
+        "test": "vitest",
+        "test:unit": "vitest --project unit",
+        "test:wire": "vitest --project wire"
+    },
+    "dependencies": {},
+    "devDependencies": {
+        "webpack": "^5.105.4",
+        "ts-loader": "^9.5.4",
+        "vitest": "^4.1.1",
+        "msw": "2.11.2",
+        "@types/node": "^20.0.0",
+        "typescript": "~5.9.3",
+        "@biomejs/biome": "2.4.10"
+    },
+    "browser": {
+        "fs": false,
+        "os": false,
+        "path": false,
+        "stream": false,
+        "crypto": false
+    },
+    "packageManager": "pnpm@10.33.0",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "sideEffects": false
+}
