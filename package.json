@@ -1,6 +1,6 @@
 {
     "name": "evcloud",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "private": false,
     "repository": {
         "type": "git",
@@ -406,6 +406,116 @@
                 "default": "./dist/cjs/api/resources/ocpi/resources/sync/exports.js"
             },
             "default": "./dist/cjs/api/resources/ocpi/resources/sync/exports.js"
+        },
+        "./proxy": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/exports.js"
+        },
+        "./proxy/backends": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/backends/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/backends/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/backends/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/backends/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/backends/exports.js"
+        },
+        "./proxy/routingPolicies": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/routingPolicies/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/routingPolicies/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/routingPolicies/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/routingPolicies/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/routingPolicies/exports.js"
+        },
+        "./proxy/routingRules": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/routingRules/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/routingRules/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/routingRules/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/routingRules/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/routingRules/exports.js"
+        },
+        "./proxy/chargerPoints": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/chargerPoints/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/chargerPoints/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/chargerPoints/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/chargerPoints/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/chargerPoints/exports.js"
+        },
+        "./proxy/fleet": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/fleet/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/fleet/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/fleet/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/fleet/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/fleet/exports.js"
+        },
+        "./proxy/chargeSessions": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/chargeSessions/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/chargeSessions/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/chargeSessions/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/chargeSessions/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/chargeSessions/exports.js"
+        },
+        "./proxy/backendSessions": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/backendSessions/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/backendSessions/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/backendSessions/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/backendSessions/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/backendSessions/exports.js"
+        },
+        "./proxy/frameLogs": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/frameLogs/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/frameLogs/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/frameLogs/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/frameLogs/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/frameLogs/exports.js"
+        },
+        "./proxy/configuration": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/configuration/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/configuration/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/configuration/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/configuration/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/configuration/exports.js"
         },
         "./webhooks": {
             "import": {

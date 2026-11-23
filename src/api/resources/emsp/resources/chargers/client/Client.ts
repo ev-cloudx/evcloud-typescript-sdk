@@ -24,7 +24,7 @@ export class ChargersClient {
     }
 
     /**
-     * ``own``: your OCPP charger, commanded through api-gateway. ``roaming``: a partner CPO, commanded over OCPI in ``ocpi_version``. For support and debugging; sending a command (``POST /emsp/commands/{authorization_reference}/{command}``) resolves by itself.
+     * ``own``: your OCPP charger, commanded through ocpp-api-gateway. ``roaming``: a partner CPO, commanded over OCPI in ``ocpi_version``. For support and debugging; sending a command (``POST /emsp/commands/{authorization_reference}/{command}``) resolves by itself.
      *
      * @param {Evcloud.emsp.ResolveRequest} request
      * @param {ChargersClient.RequestOptions} requestOptions - Request-specific configuration.
