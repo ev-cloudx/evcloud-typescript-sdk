@@ -12,10 +12,9 @@
             "environment": "EvcloudEnvironment"
         }
     },
-    "originGitCommit": "0a6d788b121581ef464170548694cc4320c812fe",
-    "originGitCommitIsDirty": false,
-    "invokedBy": "ci",
-    "requestedVersion": "0.1.0",
-    "ciProvider": "github",
-    "sdkVersion": "0.1.0"
+    "originGitCommit": "b6add7a74c95fd9db334e7d66b2217cf06930d3a",
+    "originGitCommitIsDirty": true,
+    "invokedBy": "manual",
+    "requestedVersion": "0.1.1",
+    "sdkVersion": "0.1.1"
 }
