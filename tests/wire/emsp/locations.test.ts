@@ -66,19 +66,6 @@ describe("LocationsClient", () => {
 
         const rawResponseBody = { detail: "detail" };
 
-        server.mockEndpoint().get("/emsp/locations").respondWith().statusCode(400).jsonBody(rawResponseBody).build();
-
-        await expect(async () => {
-            return await client.emsp.locations.list();
-        }).rejects.toThrow(Evcloud.BadRequestError);
-    });
-
-    test("list (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
         server.mockEndpoint().get("/emsp/locations").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
 
         await expect(async () => {
@@ -86,7 +73,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.UnauthorizedError);
     });
 
-    test("list (4)", async () => {
+    test("list (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -99,7 +86,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
     });
 
-    test("list (5)", async () => {
+    test("list (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -112,7 +99,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
 
-    test("list (6)", async () => {
+    test("list (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -125,7 +112,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.BadGatewayError);
     });
 
-    test("list (7)", async () => {
+    test("list (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -181,28 +168,6 @@ describe("LocationsClient", () => {
             .post("/emsp/locations/availability")
             .jsonBody(rawRequestBody)
             .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.locations.checkAvailability({
-                location_ids: ["location_ids", "location_ids"],
-            });
-        }).rejects.toThrow(Evcloud.BadRequestError);
-    });
-
-    test("check_availability (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { location_ids: ["location_ids", "location_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/locations/availability")
-            .jsonBody(rawRequestBody)
-            .respondWith()
             .statusCode(401)
             .jsonBody(rawResponseBody)
             .build();
@@ -214,7 +179,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.UnauthorizedError);
     });
 
-    test("check_availability (4)", async () => {
+    test("check_availability (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { location_ids: ["location_ids", "location_ids"] };
@@ -236,7 +201,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
     });
 
-    test("check_availability (5)", async () => {
+    test("check_availability (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { location_ids: ["location_ids", "location_ids"] };
@@ -258,7 +223,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
 
-    test("check_availability (6)", async () => {
+    test("check_availability (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { location_ids: ["location_ids", "location_ids"] };
@@ -280,7 +245,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.BadGatewayError);
     });
 
-    test("check_availability (7)", async () => {
+    test("check_availability (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { location_ids: ["location_ids", "location_ids"] };
@@ -343,27 +308,6 @@ describe("LocationsClient", () => {
             .mockEndpoint()
             .get("/emsp/locations/clusters")
             .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.locations.cluster({
-                zoom_level: 22,
-            });
-        }).rejects.toThrow(Evcloud.BadRequestError);
-    });
-
-    test("cluster (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/locations/clusters")
-            .respondWith()
             .statusCode(401)
             .jsonBody(rawResponseBody)
             .build();
@@ -375,7 +319,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.UnauthorizedError);
     });
 
-    test("cluster (4)", async () => {
+    test("cluster (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -396,7 +340,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
     });
 
-    test("cluster (5)", async () => {
+    test("cluster (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -417,7 +361,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
 
-    test("cluster (6)", async () => {
+    test("cluster (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -438,7 +382,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.BadGatewayError);
     });
 
-    test("cluster (7)", async () => {
+    test("cluster (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -489,25 +433,6 @@ describe("LocationsClient", () => {
             .mockEndpoint()
             .get("/emsp/locations/facilities")
             .respondWith()
-            .statusCode(400)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.locations.listFacilities();
-        }).rejects.toThrow(Evcloud.BadRequestError);
-    });
-
-    test("list_facilities (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/locations/facilities")
-            .respondWith()
             .statusCode(401)
             .jsonBody(rawResponseBody)
             .build();
@@ -517,7 +442,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.UnauthorizedError);
     });
 
-    test("list_facilities (4)", async () => {
+    test("list_facilities (3)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -536,7 +461,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
     });
 
-    test("list_facilities (5)", async () => {
+    test("list_facilities (4)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -555,7 +480,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
 
-    test("list_facilities (6)", async () => {
+    test("list_facilities (5)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
@@ -574,7 +499,7 @@ describe("LocationsClient", () => {
         }).rejects.toThrow(Evcloud.BadGatewayError);
     });
 
-    test("list_facilities (7)", async () => {
+    test("list_facilities (6)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 

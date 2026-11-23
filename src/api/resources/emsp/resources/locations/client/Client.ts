@@ -24,12 +24,11 @@ export class LocationsClient {
     }
 
     /**
-     * Your own OCPP chargers and roaming CPOs' locations, filtered by area, text, CPO, connector, power, facilities and parking type, optionally scoped to a network or a token group's networks. Each row carries a stable ``uid`` and its ``source`` (``OWN_OCPP`` or ``PARTNER_OCPI``).
+     * Your own OCPP chargers and roaming CPOs' locations, filtered by area, text, CPO, connector, power, facilities and parking type, optionally scoped to a network. Each row carries a stable ``uid`` and its ``source`` (``OWN_OCPP`` or ``PARTNER_OCPI``).
      *
      * @param {Evcloud.emsp.ListLocationsRequest} request
      * @param {LocationsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Evcloud.BadRequestError}
      * @throws {@link Evcloud.UnauthorizedError}
      * @throws {@link Evcloud.UnprocessableEntityError}
      * @throws {@link Evcloud.TooManyRequestsError}
@@ -51,21 +50,19 @@ export class LocationsClient {
     public async list(
         request: Evcloud.emsp.ListLocationsRequest = {},
         requestOptions?: LocationsClient.RequestOptions,
-    ): Promise<
-        core.Page<Evcloud.EmspGatewaySchemaLocationsLocationOut, Evcloud.EmspGatewaySchemaLocationsLocationPage>
-    > {
+    ): Promise<core.Page<Evcloud.EmspLocationOut, Evcloud.EmspLocationPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Evcloud.emsp.ListLocationsRequest,
-            ): Promise<core.WithRawResponse<Evcloud.EmspGatewaySchemaLocationsLocationPage>> => {
+            ): Promise<core.WithRawResponse<Evcloud.EmspLocationPage>> => {
                 const {
                     cpo_ids: cpoIds,
+                    source,
                     countries,
                     connector_types: connectorTypes,
                     facilities,
                     parking_types: parkingTypes,
                     network_id: networkId,
-                    token_group_id: tokenGroupId,
                     bounding_box: boundingBox,
                     after,
                     limit,
@@ -75,16 +72,15 @@ export class LocationsClient {
                     radius_km: radiusKm,
                     availability,
                     min_power: minPower,
-                    own,
                 } = request;
                 const _queryParams: Record<string, unknown> = {
                     cpo_ids: cpoIds,
+                    source: Array.isArray(source) ? source.map((item) => item) : source != null ? source : undefined,
                     countries,
                     connector_types: connectorTypes,
                     facilities,
                     parking_types: parkingTypes,
                     network_id: networkId,
-                    token_group_id: tokenGroupId,
                     bounding_box: boundingBox,
                     after,
                     limit,
@@ -94,7 +90,6 @@ export class LocationsClient {
                     radius_km: radiusKm,
                     availability,
                     min_power: minPower,
-                    own,
                 };
                 const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
                 const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -123,18 +118,10 @@ export class LocationsClient {
                     logging: this._options.logging,
                 });
                 if (_response.ok) {
-                    return {
-                        data: _response.body as Evcloud.EmspGatewaySchemaLocationsLocationPage,
-                        rawResponse: _response.rawResponse,
-                    };
+                    return { data: _response.body as Evcloud.EmspLocationPage, rawResponse: _response.rawResponse };
                 }
                 if (_response.error.reason === "status-code") {
                     switch (_response.error.statusCode) {
-                        case 400:
-                            throw new Evcloud.BadRequestError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
                         case 401:
                             throw new Evcloud.UnauthorizedError(
                                 _response.error.body as Evcloud.HttpErrorResponse,
@@ -172,10 +159,7 @@ export class LocationsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<
-            Evcloud.EmspGatewaySchemaLocationsLocationOut,
-            Evcloud.EmspGatewaySchemaLocationsLocationPage
-        >({
+        return new core.Page<Evcloud.EmspLocationOut, Evcloud.EmspLocationPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -194,7 +178,6 @@ export class LocationsClient {
      * @param {Evcloud.emsp.AvailabilityRequest} request
      * @param {LocationsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Evcloud.BadRequestError}
      * @throws {@link Evcloud.UnauthorizedError}
      * @throws {@link Evcloud.UnprocessableEntityError}
      * @throws {@link Evcloud.TooManyRequestsError}
@@ -250,11 +233,6 @@ export class LocationsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
-                case 400:
-                    throw new Evcloud.BadRequestError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
                 case 401:
                     throw new Evcloud.UnauthorizedError(
                         _response.error.body as Evcloud.HttpErrorResponse,
@@ -300,7 +278,6 @@ export class LocationsClient {
      * @param {Evcloud.emsp.ClusterLocationsRequest} request
      * @param {LocationsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Evcloud.BadRequestError}
      * @throws {@link Evcloud.UnauthorizedError}
      * @throws {@link Evcloud.UnprocessableEntityError}
      * @throws {@link Evcloud.TooManyRequestsError}
@@ -326,16 +303,10 @@ export class LocationsClient {
         request: Evcloud.emsp.ClusterLocationsRequest,
         requestOptions?: LocationsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.ClusterPage>> {
-        const {
-            zoom_level: zoomLevel,
-            network_id: networkId,
-            token_group_id: tokenGroupId,
-            bounding_box: boundingBox,
-        } = request;
+        const { zoom_level: zoomLevel, network_id: networkId, bounding_box: boundingBox } = request;
         const _queryParams: Record<string, unknown> = {
             zoom_level: zoomLevel,
             network_id: networkId,
-            token_group_id: tokenGroupId,
             bounding_box: boundingBox,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
@@ -370,11 +341,6 @@ export class LocationsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
-                case 400:
-                    throw new Evcloud.BadRequestError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
                 case 401:
                     throw new Evcloud.UnauthorizedError(
                         _response.error.body as Evcloud.HttpErrorResponse,
@@ -418,7 +384,6 @@ export class LocationsClient {
      * @param {Evcloud.emsp.ListFacilitiesLocationsRequest} request
      * @param {LocationsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
-     * @throws {@link Evcloud.BadRequestError}
      * @throws {@link Evcloud.UnauthorizedError}
      * @throws {@link Evcloud.UnprocessableEntityError}
      * @throws {@link Evcloud.TooManyRequestsError}
@@ -443,11 +408,10 @@ export class LocationsClient {
         request: Evcloud.emsp.ListFacilitiesLocationsRequest = {},
         requestOptions?: LocationsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.FacilityPage>> {
-        const { countries, network_id: networkId, token_group_id: tokenGroupId } = request;
+        const { countries, network_id: networkId } = request;
         const _queryParams: Record<string, unknown> = {
             countries,
             network_id: networkId,
-            token_group_id: tokenGroupId,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -481,11 +445,6 @@ export class LocationsClient {
 
         if (_response.error.reason === "status-code") {
             switch (_response.error.statusCode) {
-                case 400:
-                    throw new Evcloud.BadRequestError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
                 case 401:
                     throw new Evcloud.UnauthorizedError(
                         _response.error.body as Evcloud.HttpErrorResponse,
@@ -559,24 +518,22 @@ export class LocationsClient {
         const {
             connector_types: connectorTypes,
             cpo_ids: cpoIds,
+            source,
             bbox,
             zoom,
             network_id: networkId,
-            token_group_id: tokenGroupId,
             min_power: minPower,
             available_only: availableOnly,
-            own,
         } = request;
         const _queryParams: Record<string, unknown> = {
             connector_types: connectorTypes,
             cpo_ids: cpoIds,
+            source: Array.isArray(source) ? source.map((item) => item) : source != null ? source : undefined,
             bbox,
             zoom,
             network_id: networkId,
-            token_group_id: tokenGroupId,
             min_power: minPower,
             available_only: availableOnly,
-            own,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -803,26 +760,24 @@ export class LocationsClient {
         const {
             connector_types: connectorTypes,
             cpo_ids: cpoIds,
+            source,
             polyline,
             buffer_km: bufferKm,
             limit,
             network_id: networkId,
-            token_group_id: tokenGroupId,
             min_power: minPower,
             available_only: availableOnly,
-            own,
         } = request;
         const _queryParams: Record<string, unknown> = {
             connector_types: connectorTypes,
             cpo_ids: cpoIds,
+            source: Array.isArray(source) ? source.map((item) => item) : source != null ? source : undefined,
             polyline,
             buffer_km: bufferKm,
             limit,
             network_id: networkId,
-            token_group_id: tokenGroupId,
             min_power: minPower,
             available_only: availableOnly,
-            own,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(

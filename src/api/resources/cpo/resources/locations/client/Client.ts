@@ -47,9 +47,11 @@ export class LocationsClient {
     public async list(
         request: Evcloud.cpo.ListLocationsRequest = {},
         requestOptions?: LocationsClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.LocationOut, Evcloud.LocationPage>> {
+    ): Promise<core.Page<Evcloud.CpoLocationOut, Evcloud.CpoLocationPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
-            async (request: Evcloud.cpo.ListLocationsRequest): Promise<core.WithRawResponse<Evcloud.LocationPage>> => {
+            async (
+                request: Evcloud.cpo.ListLocationsRequest,
+            ): Promise<core.WithRawResponse<Evcloud.CpoLocationPage>> => {
                 const { country_code: countryCode, party_id: partyId, publish, offset, limit } = request;
                 const _queryParams: Record<string, unknown> = {
                     country_code: countryCode,
@@ -85,7 +87,7 @@ export class LocationsClient {
                     logging: this._options.logging,
                 });
                 if (_response.ok) {
-                    return { data: _response.body as Evcloud.LocationPage, rawResponse: _response.rawResponse };
+                    return { data: _response.body as Evcloud.CpoLocationPage, rawResponse: _response.rawResponse };
                 }
                 if (_response.error.reason === "status-code") {
                     switch (_response.error.statusCode) {
@@ -126,7 +128,7 @@ export class LocationsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.LocationOut, Evcloud.LocationPage>({
+        return new core.Page<Evcloud.CpoLocationOut, Evcloud.CpoLocationPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -175,14 +177,14 @@ export class LocationsClient {
     public create(
         request: Evcloud.cpo.LocationCreate,
         requestOptions?: LocationsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.LocationOut> {
+    ): core.HttpResponsePromise<Evcloud.CpoLocationOut> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
         request: Evcloud.cpo.LocationCreate,
         requestOptions?: LocationsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.LocationOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.CpoLocationOut>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -209,7 +211,7 @@ export class LocationsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.LocationOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.CpoLocationOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -280,14 +282,14 @@ export class LocationsClient {
     public get(
         request: Evcloud.cpo.GetLocationsRequest,
         requestOptions?: LocationsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.LocationOut> {
+    ): core.HttpResponsePromise<Evcloud.CpoLocationOut> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Evcloud.cpo.GetLocationsRequest,
         requestOptions?: LocationsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.LocationOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.CpoLocationOut>> {
         const { location_id: locationId, country_code: countryCode, party_id: partyId } = request;
         const _queryParams: Record<string, unknown> = {
             country_code: countryCode,
@@ -320,7 +322,7 @@ export class LocationsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.LocationOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.CpoLocationOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -511,14 +513,14 @@ export class LocationsClient {
     public update(
         request: Evcloud.cpo.LocationPatch,
         requestOptions?: LocationsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.LocationOut> {
+    ): core.HttpResponsePromise<Evcloud.CpoLocationOut> {
         return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
         request: Evcloud.cpo.LocationPatch,
         requestOptions?: LocationsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.LocationOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.CpoLocationOut>> {
         const { location_id: locationId, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -546,7 +548,7 @@ export class LocationsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.LocationOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.CpoLocationOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

@@ -16,6 +16,6 @@ export namespace BatchResponse {
     export type Missing = Missing.Item[];
 
     export namespace Missing {
-        export type Item = Evcloud.EmspGatewaySchemaLocationLookupLocationKey | string;
+        export type Item = Evcloud.LocationKey | string;
     }
 }

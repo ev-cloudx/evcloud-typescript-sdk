@@ -10,8 +10,6 @@ export * as chargeSessions from "./chargeSessions/index.js";
 export * from "./configuration/client/requests/index.js";
 export * as configuration from "./configuration/index.js";
 export * from "./configuration/types/index.js";
-export * from "./fleet/client/requests/index.js";
-export * as fleet from "./fleet/index.js";
 export * from "./frameLogs/client/requests/index.js";
 export * as frameLogs from "./frameLogs/index.js";
 export * from "./frameLogs/types/index.js";

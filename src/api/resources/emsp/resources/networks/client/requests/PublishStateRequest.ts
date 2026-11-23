@@ -3,7 +3,6 @@
 /**
  * @example
  *     {
- *         "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
  *         network_id: 20,
  *         published: true
  *     }
@@ -11,8 +10,6 @@
 export interface PublishStateRequest {
     /** The network's ``network_id``. */
     network_id: number;
-    /** A unique key you choose for this call, e.g. a UUID. Retrying with the same key returns the first result instead of acting twice. */
-    "Idempotency-Key": string;
     published: boolean;
     unpublish_drain_until?: string | null;
 }

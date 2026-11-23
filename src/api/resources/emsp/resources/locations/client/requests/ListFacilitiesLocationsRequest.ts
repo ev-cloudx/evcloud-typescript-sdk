@@ -9,8 +9,6 @@
 export interface ListFacilitiesLocationsRequest {
     /** ISO 3166-1 alpha-3 countries, e.g. ``NLD``. Repeat for more than one. */
     countries?: string | string[];
-    /** Only locations this network reaches. Not together with token_group_id. */
+    /** Only locations this network reaches. */
     network_id?: number | null;
-    /** Only locations the group's networks reach. Not together with network_id. */
-    token_group_id?: number | null;
 }

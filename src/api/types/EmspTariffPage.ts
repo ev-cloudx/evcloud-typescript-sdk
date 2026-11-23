@@ -6,7 +6,7 @@ import type * as Evcloud from "../index.js";
  * One page of partner tariffs; follow ``pagination`` for the next page.
  */
 export interface EmspTariffPage {
-    data: Evcloud.Tariff[];
+    data: Evcloud.EmspTariffOut[];
     pagination: Evcloud.PageInfo;
     /** Accepts any additional properties */
     [key: string]: any;

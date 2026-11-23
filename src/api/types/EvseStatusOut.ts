@@ -6,7 +6,7 @@ import type * as Evcloud from "../index.js";
  * Current status of one EVSE and its connectors. Never cached.
  */
 export interface EvseStatusOut {
-    location: Evcloud.EmspGatewaySchemaLocationLookupLocationKey;
+    location: Evcloud.LocationKey;
     evse_uid: string;
     evse_id?: (string | null) | undefined;
     status?: (string | null) | undefined;

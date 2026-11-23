@@ -7,7 +7,6 @@ import { BackendsClient } from "../resources/backends/client/Client.js";
 import { ChargerPointsClient } from "../resources/chargerPoints/client/Client.js";
 import { ChargeSessionsClient } from "../resources/chargeSessions/client/Client.js";
 import { ConfigurationClient } from "../resources/configuration/client/Client.js";
-import { FleetClient } from "../resources/fleet/client/Client.js";
 import { FrameLogsClient } from "../resources/frameLogs/client/Client.js";
 import { RoutingPoliciesClient } from "../resources/routingPolicies/client/Client.js";
 import { RoutingRulesClient } from "../resources/routingRules/client/Client.js";
@@ -22,7 +21,6 @@ export class ProxyClient {
     protected _routingPolicies: RoutingPoliciesClient | undefined;
     protected _routingRules: RoutingRulesClient | undefined;
     protected _chargerPoints: ChargerPointsClient | undefined;
-    protected _fleet: FleetClient | undefined;
     protected _chargeSessions: ChargeSessionsClient | undefined;
     protected _backendSessions: BackendSessionsClient | undefined;
     protected _frameLogs: FrameLogsClient | undefined;
@@ -46,10 +44,6 @@ export class ProxyClient {
 
     public get chargerPoints(): ChargerPointsClient {
         return (this._chargerPoints ??= new ChargerPointsClient(this._options));
-    }
-
-    public get fleet(): FleetClient {
-        return (this._fleet ??= new FleetClient(this._options));
     }
 
     public get chargeSessions(): ChargeSessionsClient {

@@ -1,6 +1,6 @@
 {
     "name": "evcloud",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "private": false,
     "repository": {
         "type": "git",
@@ -176,50 +176,6 @@
             },
             "default": "./dist/cjs/api/resources/emsp/resources/networks/exports.js"
         },
-        "./emsp/empIdentities": {
-            "import": {
-                "types": "./dist/esm/api/resources/emsp/resources/empIdentities/exports.d.mts",
-                "default": "./dist/esm/api/resources/emsp/resources/empIdentities/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/emsp/resources/empIdentities/exports.d.ts",
-                "default": "./dist/cjs/api/resources/emsp/resources/empIdentities/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/emsp/resources/empIdentities/exports.js"
-        },
-        "./emsp/tenant": {
-            "import": {
-                "types": "./dist/esm/api/resources/emsp/resources/tenant/exports.d.mts",
-                "default": "./dist/esm/api/resources/emsp/resources/tenant/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/emsp/resources/tenant/exports.d.ts",
-                "default": "./dist/cjs/api/resources/emsp/resources/tenant/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/emsp/resources/tenant/exports.js"
-        },
-        "./emsp/tokenGroups": {
-            "import": {
-                "types": "./dist/esm/api/resources/emsp/resources/tokenGroups/exports.d.mts",
-                "default": "./dist/esm/api/resources/emsp/resources/tokenGroups/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/emsp/resources/tokenGroups/exports.d.ts",
-                "default": "./dist/cjs/api/resources/emsp/resources/tokenGroups/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/emsp/resources/tokenGroups/exports.js"
-        },
-        "./emsp/tokens": {
-            "import": {
-                "types": "./dist/esm/api/resources/emsp/resources/tokens/exports.d.mts",
-                "default": "./dist/esm/api/resources/emsp/resources/tokens/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/emsp/resources/tokens/exports.d.ts",
-                "default": "./dist/cjs/api/resources/emsp/resources/tokens/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/emsp/resources/tokens/exports.js"
-        },
         "./emsp/evses": {
             "import": {
                 "types": "./dist/esm/api/resources/emsp/resources/evses/exports.d.mts",
@@ -241,28 +197,6 @@
                 "default": "./dist/cjs/api/resources/emsp/resources/tariffs/exports.js"
             },
             "default": "./dist/cjs/api/resources/emsp/resources/tariffs/exports.js"
-        },
-        "./emsp/chargers": {
-            "import": {
-                "types": "./dist/esm/api/resources/emsp/resources/chargers/exports.d.mts",
-                "default": "./dist/esm/api/resources/emsp/resources/chargers/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/emsp/resources/chargers/exports.d.ts",
-                "default": "./dist/cjs/api/resources/emsp/resources/chargers/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/emsp/resources/chargers/exports.js"
-        },
-        "./emsp/commands": {
-            "import": {
-                "types": "./dist/esm/api/resources/emsp/resources/commands/exports.d.mts",
-                "default": "./dist/esm/api/resources/emsp/resources/commands/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/emsp/resources/commands/exports.d.ts",
-                "default": "./dist/cjs/api/resources/emsp/resources/commands/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/emsp/resources/commands/exports.js"
         },
         "./emsp/sessions": {
             "import": {
@@ -461,17 +395,6 @@
                 "default": "./dist/cjs/api/resources/proxy/resources/chargerPoints/exports.js"
             },
             "default": "./dist/cjs/api/resources/proxy/resources/chargerPoints/exports.js"
-        },
-        "./proxy/fleet": {
-            "import": {
-                "types": "./dist/esm/api/resources/proxy/resources/fleet/exports.d.mts",
-                "default": "./dist/esm/api/resources/proxy/resources/fleet/exports.mjs"
-            },
-            "require": {
-                "types": "./dist/cjs/api/resources/proxy/resources/fleet/exports.d.ts",
-                "default": "./dist/cjs/api/resources/proxy/resources/fleet/exports.js"
-            },
-            "default": "./dist/cjs/api/resources/proxy/resources/fleet/exports.js"
         },
         "./proxy/chargeSessions": {
             "import": {

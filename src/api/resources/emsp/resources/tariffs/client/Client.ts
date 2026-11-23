@@ -47,7 +47,7 @@ export class TariffsClient {
     public async list(
         request: Evcloud.emsp.ListTariffsRequest = {},
         requestOptions?: TariffsClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.Tariff, Evcloud.EmspTariffPage>> {
+    ): Promise<core.Page<Evcloud.EmspTariffOut, Evcloud.EmspTariffPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (request: Evcloud.emsp.ListTariffsRequest): Promise<core.WithRawResponse<Evcloud.EmspTariffPage>> => {
                 const { country_code: countryCode, party_id: partyId, after, limit } = request;
@@ -125,7 +125,7 @@ export class TariffsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.Tariff, Evcloud.EmspTariffPage>({
+        return new core.Page<Evcloud.EmspTariffOut, Evcloud.EmspTariffPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -163,14 +163,14 @@ export class TariffsClient {
     public get(
         request: Evcloud.emsp.GetTariffsRequest,
         requestOptions?: TariffsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.Tariff> {
+    ): core.HttpResponsePromise<Evcloud.EmspTariffOut> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Evcloud.emsp.GetTariffsRequest,
         requestOptions?: TariffsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.Tariff>> {
+    ): Promise<core.WithRawResponse<Evcloud.EmspTariffOut>> {
         const { tariff_id: tariffId, country_code: countryCode, party_id: partyId } = request;
         const _queryParams: Record<string, unknown> = {
             country_code: countryCode,
@@ -203,7 +203,7 @@ export class TariffsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.Tariff, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.EmspTariffOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

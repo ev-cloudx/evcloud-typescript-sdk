@@ -180,7 +180,7 @@ export class TariffsClient {
     public async list(
         request: Evcloud.cpo.ListTariffsRequest = {},
         requestOptions?: TariffsClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.TariffOut, Evcloud.TariffPage>> {
+    ): Promise<core.Page<Evcloud.CpoTariffOut, Evcloud.TariffPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (request: Evcloud.cpo.ListTariffsRequest): Promise<core.WithRawResponse<Evcloud.TariffPage>> => {
                 const {
@@ -271,7 +271,7 @@ export class TariffsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.TariffOut, Evcloud.TariffPage>({
+        return new core.Page<Evcloud.CpoTariffOut, Evcloud.TariffPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -320,14 +320,14 @@ export class TariffsClient {
     public create(
         request: Evcloud.cpo.TariffCreate,
         requestOptions?: TariffsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.TariffOut> {
+    ): core.HttpResponsePromise<Evcloud.CpoTariffOut> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
         request: Evcloud.cpo.TariffCreate,
         requestOptions?: TariffsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.TariffOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.CpoTariffOut>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -354,7 +354,7 @@ export class TariffsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.TariffOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.CpoTariffOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -430,14 +430,14 @@ export class TariffsClient {
     public get(
         request: Evcloud.cpo.GetTariffsRequest,
         requestOptions?: TariffsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.TariffOut> {
+    ): core.HttpResponsePromise<Evcloud.CpoTariffOut> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Evcloud.cpo.GetTariffsRequest,
         requestOptions?: TariffsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.TariffOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.CpoTariffOut>> {
         const { tariff_id: tariffId, country_code: countryCode, party_id: partyId } = request;
         const _queryParams: Record<string, unknown> = {
             country_code: countryCode,
@@ -470,7 +470,7 @@ export class TariffsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.TariffOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.CpoTariffOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -663,14 +663,14 @@ export class TariffsClient {
     public update(
         request: Evcloud.cpo.TariffPatch,
         requestOptions?: TariffsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.TariffOut> {
+    ): core.HttpResponsePromise<Evcloud.CpoTariffOut> {
         return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
         request: Evcloud.cpo.TariffPatch,
         requestOptions?: TariffsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.TariffOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.CpoTariffOut>> {
         const { tariff_id: tariffId, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -698,7 +698,7 @@ export class TariffsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.TariffOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.CpoTariffOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

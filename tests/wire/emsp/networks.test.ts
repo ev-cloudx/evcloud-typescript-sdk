@@ -18,10 +18,10 @@ describe("NetworksClient", () => {
                     published: false,
                     publish_state: "UNPUBLISHED",
                     workspace_id: "550e8400-e29b-41d4-a716-446655440000",
-                    emp_identity_id: 3,
+                    owner_country_code: "NL",
+                    owner_party_id: "OCP",
                     description: "DC sites only",
                     cpo_ids: ["NL*ABC", "BE*XYZ"],
-                    protocol: "OCPI",
                     publicly_accessible: false,
                     parent_network_id: 20,
                     countries: ["NLD", "BEL"],
@@ -137,10 +137,10 @@ describe("NetworksClient", () => {
             published: false,
             publish_state: "UNPUBLISHED",
             workspace_id: "550e8400-e29b-41d4-a716-446655440000",
-            emp_identity_id: 3,
+            owner_country_code: "NL",
+            owner_party_id: "OCP",
             description: "DC sites only",
             cpo_ids: ["NL*ABC", "BE*XYZ"],
-            protocol: "OCPI",
             publicly_accessible: false,
             parent_network_id: 20,
             countries: ["NLD", "BEL"],
@@ -153,7 +153,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks")
-            .header("Idempotency-Key", "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -161,7 +160,6 @@ describe("NetworksClient", () => {
             .build();
 
         const response = await client.emsp.networks.create({
-            "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
             name: "Fleet fast chargers",
             parent_network_id: 20,
             cpo_ids: ["NL*ABC", "BE*XYZ"],
@@ -181,7 +179,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -190,7 +187,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.create({
-                "Idempotency-Key": "idempotencyKey",
                 name: "x",
                 parent_network_id: 1,
             });
@@ -206,7 +202,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(401)
@@ -215,7 +210,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.create({
-                "Idempotency-Key": "idempotencyKey",
                 name: "x",
                 parent_network_id: 1,
             });
@@ -231,7 +225,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -240,7 +233,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.create({
-                "Idempotency-Key": "idempotencyKey",
                 name: "x",
                 parent_network_id: 1,
             });
@@ -251,37 +243,11 @@ describe("NetworksClient", () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { name: "x", parent_network_id: 1 };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(409)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.create({
-                "Idempotency-Key": "idempotencyKey",
-                name: "x",
-                parent_network_id: 1,
-            });
-        }).rejects.toThrow(Evcloud.ConflictError);
-    });
-
-    test("create (6)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { name: "x", parent_network_id: 1 };
         const rawResponseBody = {};
 
         server
             .mockEndpoint()
             .post("/emsp/networks")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(422)
@@ -290,11 +256,33 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.create({
-                "Idempotency-Key": "idempotencyKey",
                 name: "x",
                 parent_network_id: 1,
             });
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
+    });
+
+    test("create (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { name: "x", parent_network_id: 1 };
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/emsp/networks")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.emsp.networks.create({
+                name: "x",
+                parent_network_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
 
     test("create (7)", async () => {
@@ -306,20 +294,18 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
-            .statusCode(429)
+            .statusCode(502)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
             return await client.emsp.networks.create({
-                "Idempotency-Key": "idempotencyKey",
                 name: "x",
                 parent_network_id: 1,
             });
-        }).rejects.toThrow(Evcloud.TooManyRequestsError);
+        }).rejects.toThrow(Evcloud.BadGatewayError);
     });
 
     test("create (8)", async () => {
@@ -331,32 +317,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(502)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.create({
-                "Idempotency-Key": "idempotencyKey",
-                name: "x",
-                parent_network_id: 1,
-            });
-        }).rejects.toThrow(Evcloud.BadGatewayError);
-    });
-
-    test("create (9)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { name: "x", parent_network_id: 1 };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -365,350 +325,9 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.create({
-                "Idempotency-Key": "idempotencyKey",
                 name: "x",
                 parent_network_id: 1,
             });
-        }).rejects.toThrow(Evcloud.GatewayTimeoutError);
-    });
-
-    test("create_base (1)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { emp_identity_id: 3, cpo_ids: ["NL*ABC", "BE*XYZ"] };
-        const rawResponseBody = {
-            network_id: 20,
-            name: "NL*OCP base network",
-            network_type: "BASE",
-            published: false,
-            publish_state: "UNPUBLISHED",
-            workspace_id: "550e8400-e29b-41d4-a716-446655440000",
-            emp_identity_id: 3,
-            cpo_ids: ["NL*ABC", "BE*XYZ"],
-            protocol: "OCPI",
-            publicly_accessible: false,
-            auto_accept_cpo_additions: false,
-            created_at: "2026-09-30T10:00:00Z",
-            updated_at: "2026-09-30T10:00:00Z",
-        };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/base")
-            .header("Idempotency-Key", "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const response = await client.emsp.networks.createBase({
-            "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
-            emp_identity_id: 3,
-            cpo_ids: ["NL*ABC", "BE*XYZ"],
-        });
-        expect(response).toEqual(rawResponseBody);
-    });
-
-    test("create_base (2)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { emp_identity_id: 1, cpo_ids: ["cpo_ids", "cpo_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/base")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(401)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createBase({
-                "Idempotency-Key": "idempotencyKey",
-                emp_identity_id: 1,
-                cpo_ids: ["cpo_ids", "cpo_ids"],
-            });
-        }).rejects.toThrow(Evcloud.UnauthorizedError);
-    });
-
-    test("create_base (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { emp_identity_id: 1, cpo_ids: ["cpo_ids", "cpo_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/base")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createBase({
-                "Idempotency-Key": "idempotencyKey",
-                emp_identity_id: 1,
-                cpo_ids: ["cpo_ids", "cpo_ids"],
-            });
-        }).rejects.toThrow(Evcloud.NotFoundError);
-    });
-
-    test("create_base (4)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { emp_identity_id: 1, cpo_ids: ["cpo_ids", "cpo_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/base")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(409)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createBase({
-                "Idempotency-Key": "idempotencyKey",
-                emp_identity_id: 1,
-                cpo_ids: ["cpo_ids", "cpo_ids"],
-            });
-        }).rejects.toThrow(Evcloud.ConflictError);
-    });
-
-    test("create_base (5)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { emp_identity_id: 1, cpo_ids: ["cpo_ids", "cpo_ids"] };
-        const rawResponseBody = {};
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/base")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(422)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createBase({
-                "Idempotency-Key": "idempotencyKey",
-                emp_identity_id: 1,
-                cpo_ids: ["cpo_ids", "cpo_ids"],
-            });
-        }).rejects.toThrow(Evcloud.UnprocessableEntityError);
-    });
-
-    test("create_base (6)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { emp_identity_id: 1, cpo_ids: ["cpo_ids", "cpo_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/base")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createBase({
-                "Idempotency-Key": "idempotencyKey",
-                emp_identity_id: 1,
-                cpo_ids: ["cpo_ids", "cpo_ids"],
-            });
-        }).rejects.toThrow(Evcloud.TooManyRequestsError);
-    });
-
-    test("create_base (7)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { emp_identity_id: 1, cpo_ids: ["cpo_ids", "cpo_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/base")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(502)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createBase({
-                "Idempotency-Key": "idempotencyKey",
-                emp_identity_id: 1,
-                cpo_ids: ["cpo_ids", "cpo_ids"],
-            });
-        }).rejects.toThrow(Evcloud.BadGatewayError);
-    });
-
-    test("create_base (8)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { emp_identity_id: 1, cpo_ids: ["cpo_ids", "cpo_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/base")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createBase({
-                "Idempotency-Key": "idempotencyKey",
-                emp_identity_id: 1,
-                cpo_ids: ["cpo_ids", "cpo_ids"],
-            });
-        }).rejects.toThrow(Evcloud.GatewayTimeoutError);
-    });
-
-    test("get_effective_view (1)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = {
-            data: [{ cpo_id: "NL*ABC", network_id: 20, network_name: "NL*OCP base network", source: "OWN" }],
-            pagination: { end_cursor: "NL*ABC", has_next: false },
-            own_base_network_cpo_count: 2,
-            published_base_network_cpo_count: 1,
-            overlap_cpo_count: 1,
-        };
-
-        server
-            .mockEndpoint({ once: false })
-            .get("/emsp/network-effective-view")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const expected = rawResponseBody;
-        const page = await client.emsp.networks.getEffectiveView({
-            limit: 50,
-            country: "NL",
-        });
-
-        expect(expected.data).toEqual(page.data);
-        expect(page.hasNextPage()).toBe(true);
-        const nextPage = await page.getNextPage();
-        expect(expected.data).toEqual(nextPage.data);
-    });
-
-    test("get_effective_view (2)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/network-effective-view")
-            .respondWith()
-            .statusCode(401)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.getEffectiveView();
-        }).rejects.toThrow(Evcloud.UnauthorizedError);
-    });
-
-    test("get_effective_view (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = {};
-
-        server
-            .mockEndpoint()
-            .get("/emsp/network-effective-view")
-            .respondWith()
-            .statusCode(422)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.getEffectiveView();
-        }).rejects.toThrow(Evcloud.UnprocessableEntityError);
-    });
-
-    test("get_effective_view (4)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/network-effective-view")
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.getEffectiveView();
-        }).rejects.toThrow(Evcloud.TooManyRequestsError);
-    });
-
-    test("get_effective_view (5)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/network-effective-view")
-            .respondWith()
-            .statusCode(502)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.getEffectiveView();
-        }).rejects.toThrow(Evcloud.BadGatewayError);
-    });
-
-    test("get_effective_view (6)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/network-effective-view")
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.getEffectiveView();
         }).rejects.toThrow(Evcloud.GatewayTimeoutError);
     });
 
@@ -723,10 +342,10 @@ describe("NetworksClient", () => {
             published: false,
             publish_state: "UNPUBLISHED",
             workspace_id: "550e8400-e29b-41d4-a716-446655440000",
-            emp_identity_id: 3,
+            owner_country_code: "NL",
+            owner_party_id: "OCP",
             description: "DC sites only",
             cpo_ids: ["NL*ABC", "BE*XYZ"],
-            protocol: "OCPI",
             publicly_accessible: false,
             parent_network_id: 20,
             countries: ["NLD", "BEL"],
@@ -1008,10 +627,10 @@ describe("NetworksClient", () => {
             published: false,
             publish_state: "UNPUBLISHED",
             workspace_id: "550e8400-e29b-41d4-a716-446655440000",
-            emp_identity_id: 3,
+            owner_country_code: "NL",
+            owner_party_id: "OCP",
             description: "DC sites only",
             cpo_ids: ["NL*ABC"],
-            protocol: "OCPI",
             publicly_accessible: false,
             parent_network_id: 20,
             countries: ["NLD", "BEL"],
@@ -1186,161 +805,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.update({
-                network_id: 1,
-            });
-        }).rejects.toThrow(Evcloud.GatewayTimeoutError);
-    });
-
-    test("list_consumers (1)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = {
-            data: [{ workspace_id: "6f1d2c3b-4a5e-4f60-8a7b-9c0d1e2f3a4b", display_name: "Fleet Co", priority: 1 }],
-            pagination: { end_cursor: "6f1d2c3b-4a5e-4f60-8a7b-9c0d1e2f3a4b", has_next: false },
-        };
-
-        server
-            .mockEndpoint({ once: false })
-            .get("/emsp/networks/20/consumers")
-            .respondWith()
-            .statusCode(200)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        const expected = rawResponseBody;
-        const page = await client.emsp.networks.listConsumers({
-            network_id: 20,
-            limit: 50,
-        });
-
-        expect(expected.data).toEqual(page.data);
-        expect(page.hasNextPage()).toBe(true);
-        const nextPage = await page.getNextPage();
-        expect(expected.data).toEqual(nextPage.data);
-    });
-
-    test("list_consumers (2)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/networks/1/consumers")
-            .respondWith()
-            .statusCode(401)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.listConsumers({
-                network_id: 1,
-            });
-        }).rejects.toThrow(Evcloud.UnauthorizedError);
-    });
-
-    test("list_consumers (3)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/networks/1/consumers")
-            .respondWith()
-            .statusCode(404)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.listConsumers({
-                network_id: 1,
-            });
-        }).rejects.toThrow(Evcloud.NotFoundError);
-    });
-
-    test("list_consumers (4)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = {};
-
-        server
-            .mockEndpoint()
-            .get("/emsp/networks/1/consumers")
-            .respondWith()
-            .statusCode(422)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.listConsumers({
-                network_id: 1,
-            });
-        }).rejects.toThrow(Evcloud.UnprocessableEntityError);
-    });
-
-    test("list_consumers (5)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/networks/1/consumers")
-            .respondWith()
-            .statusCode(429)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.listConsumers({
-                network_id: 1,
-            });
-        }).rejects.toThrow(Evcloud.TooManyRequestsError);
-    });
-
-    test("list_consumers (6)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/networks/1/consumers")
-            .respondWith()
-            .statusCode(502)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.listConsumers({
-                network_id: 1,
-            });
-        }).rejects.toThrow(Evcloud.BadGatewayError);
-    });
-
-    test("list_consumers (7)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .get("/emsp/networks/1/consumers")
-            .respondWith()
-            .statusCode(504)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.listConsumers({
                 network_id: 1,
             });
         }).rejects.toThrow(Evcloud.GatewayTimeoutError);
@@ -1530,9 +994,9 @@ describe("NetworksClient", () => {
             published: true,
             publish_state: "PUBLISHED",
             workspace_id: "550e8400-e29b-41d4-a716-446655440000",
-            emp_identity_id: 3,
+            owner_country_code: "NL",
+            owner_party_id: "OCP",
             cpo_ids: ["NL*ABC", "BE*XYZ"],
-            protocol: "OCPI",
             publicly_accessible: false,
             auto_accept_cpo_additions: false,
             created_at: "2026-09-30T10:00:00Z",
@@ -1542,7 +1006,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .patch("/emsp/networks/20/publish-state")
-            .header("Idempotency-Key", "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -1550,7 +1013,6 @@ describe("NetworksClient", () => {
             .build();
 
         const response = await client.emsp.networks.setPublishState({
-            "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
             network_id: 20,
             published: true,
         });
@@ -1566,7 +1028,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .patch("/emsp/networks/1/publish-state")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -1575,7 +1036,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.setPublishState({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 published: true,
             });
@@ -1591,7 +1051,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .patch("/emsp/networks/1/publish-state")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(401)
@@ -1600,7 +1059,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.setPublishState({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 published: true,
             });
@@ -1616,7 +1074,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .patch("/emsp/networks/1/publish-state")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -1625,7 +1082,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.setPublishState({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 published: true,
             });
@@ -1636,37 +1092,11 @@ describe("NetworksClient", () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { published: true };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .patch("/emsp/networks/1/publish-state")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(409)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.setPublishState({
-                "Idempotency-Key": "idempotencyKey",
-                network_id: 1,
-                published: true,
-            });
-        }).rejects.toThrow(Evcloud.ConflictError);
-    });
-
-    test("set_publish_state (6)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { published: true };
         const rawResponseBody = {};
 
         server
             .mockEndpoint()
             .patch("/emsp/networks/1/publish-state")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(422)
@@ -1675,11 +1105,33 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.setPublishState({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 published: true,
             });
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
+    });
+
+    test("set_publish_state (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { published: true };
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .patch("/emsp/networks/1/publish-state")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.emsp.networks.setPublishState({
+                network_id: 1,
+                published: true,
+            });
+        }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
 
     test("set_publish_state (7)", async () => {
@@ -1691,20 +1143,18 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .patch("/emsp/networks/1/publish-state")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
-            .statusCode(429)
+            .statusCode(502)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
             return await client.emsp.networks.setPublishState({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 published: true,
             });
-        }).rejects.toThrow(Evcloud.TooManyRequestsError);
+        }).rejects.toThrow(Evcloud.BadGatewayError);
     });
 
     test("set_publish_state (8)", async () => {
@@ -1716,32 +1166,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .patch("/emsp/networks/1/publish-state")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(502)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.setPublishState({
-                "Idempotency-Key": "idempotencyKey",
-                network_id: 1,
-                published: true,
-            });
-        }).rejects.toThrow(Evcloud.BadGatewayError);
-    });
-
-    test("set_publish_state (9)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { published: true };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .patch("/emsp/networks/1/publish-state")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -1750,7 +1174,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.setPublishState({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 published: true,
             });
@@ -1942,7 +1365,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks/21/rules")
-            .header("Idempotency-Key", "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(200)
@@ -1950,7 +1372,6 @@ describe("NetworksClient", () => {
             .build();
 
         const response = await client.emsp.networks.createRule({
-            "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
             network_id: 21,
             rule_type: "EXCLUDE",
             location_ids: ["LOC-AMS-001"],
@@ -1967,7 +1388,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks/1/rules")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(400)
@@ -1976,7 +1396,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.createRule({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 rule_type: "INCLUDE",
                 location_ids: ["location_ids", "location_ids"],
@@ -1993,7 +1412,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks/1/rules")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(401)
@@ -2002,7 +1420,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.createRule({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 rule_type: "INCLUDE",
                 location_ids: ["location_ids", "location_ids"],
@@ -2019,7 +1436,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks/1/rules")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(404)
@@ -2028,7 +1444,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.createRule({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 rule_type: "INCLUDE",
                 location_ids: ["location_ids", "location_ids"],
@@ -2040,38 +1455,11 @@ describe("NetworksClient", () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
         const rawRequestBody = { rule_type: "INCLUDE", location_ids: ["location_ids", "location_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/1/rules")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(409)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createRule({
-                "Idempotency-Key": "idempotencyKey",
-                network_id: 1,
-                rule_type: "INCLUDE",
-                location_ids: ["location_ids", "location_ids"],
-            });
-        }).rejects.toThrow(Evcloud.ConflictError);
-    });
-
-    test("create_rule (6)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { rule_type: "INCLUDE", location_ids: ["location_ids", "location_ids"] };
         const rawResponseBody = {};
 
         server
             .mockEndpoint()
             .post("/emsp/networks/1/rules")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(422)
@@ -2080,12 +1468,35 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.createRule({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 rule_type: "INCLUDE",
                 location_ids: ["location_ids", "location_ids"],
             });
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
+    });
+
+    test("create_rule (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = { rule_type: "INCLUDE", location_ids: ["location_ids", "location_ids"] };
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/emsp/networks/1/rules")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.emsp.networks.createRule({
+                network_id: 1,
+                rule_type: "INCLUDE",
+                location_ids: ["location_ids", "location_ids"],
+            });
+        }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
 
     test("create_rule (7)", async () => {
@@ -2097,21 +1508,19 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks/1/rules")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
-            .statusCode(429)
+            .statusCode(502)
             .jsonBody(rawResponseBody)
             .build();
 
         await expect(async () => {
             return await client.emsp.networks.createRule({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 rule_type: "INCLUDE",
                 location_ids: ["location_ids", "location_ids"],
             });
-        }).rejects.toThrow(Evcloud.TooManyRequestsError);
+        }).rejects.toThrow(Evcloud.BadGatewayError);
     });
 
     test("create_rule (8)", async () => {
@@ -2123,33 +1532,6 @@ describe("NetworksClient", () => {
         server
             .mockEndpoint()
             .post("/emsp/networks/1/rules")
-            .header("Idempotency-Key", "idempotencyKey")
-            .jsonBody(rawRequestBody)
-            .respondWith()
-            .statusCode(502)
-            .jsonBody(rawResponseBody)
-            .build();
-
-        await expect(async () => {
-            return await client.emsp.networks.createRule({
-                "Idempotency-Key": "idempotencyKey",
-                network_id: 1,
-                rule_type: "INCLUDE",
-                location_ids: ["location_ids", "location_ids"],
-            });
-        }).rejects.toThrow(Evcloud.BadGatewayError);
-    });
-
-    test("create_rule (9)", async () => {
-        const server = mockServerPool.createServer();
-        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
-        const rawRequestBody = { rule_type: "INCLUDE", location_ids: ["location_ids", "location_ids"] };
-        const rawResponseBody = { detail: "detail" };
-
-        server
-            .mockEndpoint()
-            .post("/emsp/networks/1/rules")
-            .header("Idempotency-Key", "idempotencyKey")
             .jsonBody(rawRequestBody)
             .respondWith()
             .statusCode(504)
@@ -2158,7 +1540,6 @@ describe("NetworksClient", () => {
 
         await expect(async () => {
             return await client.emsp.networks.createRule({
-                "Idempotency-Key": "idempotencyKey",
                 network_id: 1,
                 rule_type: "INCLUDE",
                 location_ids: ["location_ids", "location_ids"],

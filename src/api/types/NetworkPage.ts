@@ -6,7 +6,7 @@ import type * as Evcloud from "../index.js";
  * One cursor page of networks. Pass pagination.end_cursor as the next after value.
  */
 export interface NetworkPage {
-    data: Evcloud.NetworkResponse[];
+    data: Evcloud.NetworkOut[];
     pagination: Evcloud.PageInfo;
     /** Accepts any additional properties */
     [key: string]: any;

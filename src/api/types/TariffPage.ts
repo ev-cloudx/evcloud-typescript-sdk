@@ -6,7 +6,7 @@ import type * as Evcloud from "../index.js";
  * One page of tariffs, most recently changed first.
  */
 export interface TariffPage {
-    items: Evcloud.TariffOut[];
+    items: Evcloud.CpoTariffOut[];
     offset: number;
     limit: number;
     next_offset?: (number | null) | undefined;

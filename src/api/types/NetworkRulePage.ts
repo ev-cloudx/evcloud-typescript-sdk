@@ -6,7 +6,7 @@ import type * as Evcloud from "../index.js";
  * One cursor page of rules.
  */
 export interface NetworkRulePage {
-    data: Evcloud.NetworkRuleResponse[];
+    data: Evcloud.NetworkRuleOut[];
     pagination: Evcloud.PageInfo;
     /** Accepts any additional properties */
     [key: string]: any;

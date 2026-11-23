@@ -8,6 +8,5 @@
  */
 export interface AvailabilityRequest {
     network_id?: number | null;
-    token_group_id?: number | null;
     location_ids: string[];
 }

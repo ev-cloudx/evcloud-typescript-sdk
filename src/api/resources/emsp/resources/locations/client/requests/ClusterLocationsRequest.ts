@@ -10,10 +10,8 @@
 export interface ClusterLocationsRequest {
     /** Map zoom level (0 = whole world, 22 = street). */
     zoom_level: number;
-    /** Only locations this network reaches. Not together with token_group_id. */
+    /** Only locations this network reaches. */
     network_id?: number | null;
-    /** Only locations the group's networks reach. Not together with network_id. */
-    token_group_id?: number | null;
     /** Only locations inside ``min_lon,min_lat,max_lon,max_lat`` (WGS84). */
     bounding_box?: string | null;
 }

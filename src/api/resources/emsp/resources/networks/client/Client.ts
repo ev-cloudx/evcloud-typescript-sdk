@@ -2,7 +2,7 @@
 
 import type { BaseClientOptions, BaseRequestOptions } from "../../../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../../../BaseClient.js";
-import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../../../core/headers.js";
+import { mergeHeaders } from "../../../../../../core/headers.js";
 import * as core from "../../../../../../core/index.js";
 import { mergeAdditionalBodyParameters } from "../../../../../../core/requestBody.js";
 import * as environments from "../../../../../../environments.js";
@@ -46,7 +46,7 @@ export class NetworksClient {
     public async list(
         request: Evcloud.emsp.ListNetworksRequest = {},
         requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.NetworkResponse, Evcloud.NetworkPage>> {
+    ): Promise<core.Page<Evcloud.NetworkOut, Evcloud.NetworkPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (request: Evcloud.emsp.ListNetworksRequest): Promise<core.WithRawResponse<Evcloud.NetworkPage>> => {
                 const {
@@ -131,7 +131,7 @@ export class NetworksClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.NetworkResponse, Evcloud.NetworkPage>({
+        return new core.Page<Evcloud.NetworkOut, Evcloud.NetworkPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -147,13 +147,12 @@ export class NetworksClient {
     /**
      * A named slice of one of your base networks: some of its CPOs, optionally filtered by country, power, parking and facilities.
      *
-     * @param {Evcloud.emsp.NetworkCreateRequest} request
+     * @param {Evcloud.emsp.NetworkCreate} request
      * @param {NetworksClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Evcloud.BadRequestError}
      * @throws {@link Evcloud.UnauthorizedError}
      * @throws {@link Evcloud.NotFoundError}
-     * @throws {@link Evcloud.ConflictError}
      * @throws {@link Evcloud.UnprocessableEntityError}
      * @throws {@link Evcloud.TooManyRequestsError}
      * @throws {@link Evcloud.BadGatewayError}
@@ -163,7 +162,6 @@ export class NetworksClient {
      *
      * @example
      *     await client.emsp.networks.create({
-     *         "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
      *         name: "Fleet fast chargers",
      *         parent_network_id: 20,
      *         cpo_ids: ["NL*ABC", "BE*XYZ"],
@@ -173,22 +171,20 @@ export class NetworksClient {
      *     })
      */
     public create(
-        request: Evcloud.emsp.NetworkCreateRequest,
+        request: Evcloud.emsp.NetworkCreate,
         requestOptions?: NetworksClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.NetworkResponse> {
+    ): core.HttpResponsePromise<Evcloud.NetworkOut> {
         return core.HttpResponsePromise.fromPromise(this.__create(request, requestOptions));
     }
 
     private async __create(
-        request: Evcloud.emsp.NetworkCreateRequest,
+        request: Evcloud.emsp.NetworkCreate,
         requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.NetworkResponse>> {
-        const { "Idempotency-Key": idempotencyKey, ..._body } = request;
+    ): Promise<core.WithRawResponse<Evcloud.NetworkOut>> {
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Idempotency-Key": idempotencyKey }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -203,15 +199,15 @@ export class NetworksClient {
             contentType: "application/json",
             queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
             requestType: "json",
-            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
+            body: mergeAdditionalBodyParameters(request, requestOptions?.additionalBodyParameters),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            maxRetries: 0,
             abortSignal: requestOptions?.abortSignal,
             fetchFn: this._options?.fetch,
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.NetworkResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.NetworkOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -228,11 +224,6 @@ export class NetworksClient {
                     );
                 case 404:
                     throw new Evcloud.NotFoundError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 409:
-                    throw new Evcloud.ConflictError(
                         _response.error.body as Evcloud.HttpErrorResponse,
                         _response.rawResponse,
                     );
@@ -269,243 +260,6 @@ export class NetworksClient {
     }
 
     /**
-     * Every CPO reachable through one of your roaming identities. Base networks are permanent.
-     *
-     * @param {Evcloud.emsp.BaseNetworkCreateRequest} request
-     * @param {NetworksClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Evcloud.UnauthorizedError}
-     * @throws {@link Evcloud.NotFoundError}
-     * @throws {@link Evcloud.ConflictError}
-     * @throws {@link Evcloud.UnprocessableEntityError}
-     * @throws {@link Evcloud.TooManyRequestsError}
-     * @throws {@link Evcloud.BadGatewayError}
-     * @throws {@link Evcloud.GatewayTimeoutError}
-     * @throws {@link errors.EvcloudError}
-     * @throws {@link errors.EvcloudTimeoutError}
-     *
-     * @example
-     *     await client.emsp.networks.createBase({
-     *         "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
-     *         emp_identity_id: 3,
-     *         cpo_ids: ["NL*ABC", "BE*XYZ"]
-     *     })
-     */
-    public createBase(
-        request: Evcloud.emsp.BaseNetworkCreateRequest,
-        requestOptions?: NetworksClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.NetworkResponse> {
-        return core.HttpResponsePromise.fromPromise(this.__createBase(request, requestOptions));
-    }
-
-    private async __createBase(
-        request: Evcloud.emsp.BaseNetworkCreateRequest,
-        requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.NetworkResponse>> {
-        const { "Idempotency-Key": idempotencyKey, ..._body } = request;
-        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-            _authRequest.headers,
-            this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Idempotency-Key": idempotencyKey }),
-            requestOptions?.headers,
-        );
-        const _response = await core.fetcher({
-            url: core.url.join(
-                (await core.Supplier.get(this._options.baseUrl)) ??
-                    (await core.Supplier.get(this._options.environment)) ??
-                    environments.EvcloudEnvironment.Production,
-                "emsp/networks/base",
-            ),
-            method: "POST",
-            headers: _headers,
-            contentType: "application/json",
-            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
-            requestType: "json",
-            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
-            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-            abortSignal: requestOptions?.abortSignal,
-            fetchFn: this._options?.fetch,
-            logging: this._options.logging,
-        });
-        if (_response.ok) {
-            return { data: _response.body as Evcloud.NetworkResponse, rawResponse: _response.rawResponse };
-        }
-
-        if (_response.error.reason === "status-code") {
-            switch (_response.error.statusCode) {
-                case 401:
-                    throw new Evcloud.UnauthorizedError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 404:
-                    throw new Evcloud.NotFoundError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 409:
-                    throw new Evcloud.ConflictError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 422:
-                    throw new Evcloud.UnprocessableEntityError(
-                        _response.error.body as Evcloud.HttpValidationError,
-                        _response.rawResponse,
-                    );
-                case 429:
-                    throw new Evcloud.TooManyRequestsError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 502:
-                    throw new Evcloud.BadGatewayError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 504:
-                    throw new Evcloud.GatewayTimeoutError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                default:
-                    throw new errors.EvcloudError({
-                        statusCode: _response.error.statusCode,
-                        body: _response.error.body,
-                        rawResponse: _response.rawResponse,
-                    });
-            }
-        }
-
-        return handleNonStatusCodeError(_response.error, _response.rawResponse, "POST", "/emsp/networks/base");
-    }
-
-    /**
-     * Each reachable CPO once: your own base networks first, then published networks in your ranking order.
-     *
-     * @param {Evcloud.emsp.GetEffectiveViewNetworksRequest} request
-     * @param {NetworksClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Evcloud.UnauthorizedError}
-     * @throws {@link Evcloud.UnprocessableEntityError}
-     * @throws {@link Evcloud.TooManyRequestsError}
-     * @throws {@link Evcloud.BadGatewayError}
-     * @throws {@link Evcloud.GatewayTimeoutError}
-     * @throws {@link errors.EvcloudError}
-     * @throws {@link errors.EvcloudTimeoutError}
-     *
-     * @example
-     *     await client.emsp.networks.getEffectiveView({
-     *         limit: 50,
-     *         country: "NL"
-     *     })
-     */
-    public async getEffectiveView(
-        request: Evcloud.emsp.GetEffectiveViewNetworksRequest = {},
-        requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.EffectiveCpo, Evcloud.EffectiveViewResponse>> {
-        const list = core.HttpResponsePromise.interceptFunction(
-            async (
-                request: Evcloud.emsp.GetEffectiveViewNetworksRequest,
-            ): Promise<core.WithRawResponse<Evcloud.EffectiveViewResponse>> => {
-                const { country, after, limit } = request;
-                const _queryParams: Record<string, unknown> = {
-                    country,
-                    after,
-                    limit,
-                };
-                const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-                    _authRequest.headers,
-                    this._options?.headers,
-                    requestOptions?.headers,
-                );
-                const _response = await core.fetcher({
-                    url: core.url.join(
-                        (await core.Supplier.get(this._options.baseUrl)) ??
-                            (await core.Supplier.get(this._options.environment)) ??
-                            environments.EvcloudEnvironment.Production,
-                        "emsp/network-effective-view",
-                    ),
-                    method: "GET",
-                    headers: _headers,
-                    queryString: core.url
-                        .queryBuilder()
-                        .addMany(_queryParams)
-                        .mergeAdditional(requestOptions?.queryParams)
-                        .build(),
-                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-                    abortSignal: requestOptions?.abortSignal,
-                    fetchFn: this._options?.fetch,
-                    logging: this._options.logging,
-                });
-                if (_response.ok) {
-                    return {
-                        data: _response.body as Evcloud.EffectiveViewResponse,
-                        rawResponse: _response.rawResponse,
-                    };
-                }
-                if (_response.error.reason === "status-code") {
-                    switch (_response.error.statusCode) {
-                        case 401:
-                            throw new Evcloud.UnauthorizedError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        case 422:
-                            throw new Evcloud.UnprocessableEntityError(
-                                _response.error.body as Evcloud.HttpValidationError,
-                                _response.rawResponse,
-                            );
-                        case 429:
-                            throw new Evcloud.TooManyRequestsError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        case 502:
-                            throw new Evcloud.BadGatewayError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        case 504:
-                            throw new Evcloud.GatewayTimeoutError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        default:
-                            throw new errors.EvcloudError({
-                                statusCode: _response.error.statusCode,
-                                body: _response.error.body,
-                                rawResponse: _response.rawResponse,
-                            });
-                    }
-                }
-                return handleNonStatusCodeError(
-                    _response.error,
-                    _response.rawResponse,
-                    "GET",
-                    "/emsp/network-effective-view",
-                );
-            },
-        );
-        const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.EffectiveCpo, Evcloud.EffectiveViewResponse>({
-            response: dataWithRawResponse.data,
-            rawResponse: dataWithRawResponse.rawResponse,
-            hasNextPage: (response) =>
-                response?.pagination.end_cursor != null &&
-                !(typeof response?.pagination.end_cursor === "string" && response?.pagination.end_cursor === ""),
-            getItems: (response) => response?.data ?? [],
-            loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pagination.end_cursor));
-            },
-        });
-    }
-
-    /**
      * With how many locations and EVSEs it reaches today and how many token groups use it.
      *
      * @param {Evcloud.emsp.GetNetworksRequest} request
@@ -528,14 +282,14 @@ export class NetworksClient {
     public get(
         request: Evcloud.emsp.GetNetworksRequest,
         requestOptions?: NetworksClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.NetworkDetailResponse> {
+    ): core.HttpResponsePromise<Evcloud.NetworkDetailOut> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Evcloud.emsp.GetNetworksRequest,
         requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.NetworkDetailResponse>> {
+    ): Promise<core.WithRawResponse<Evcloud.NetworkDetailOut>> {
         const { network_id: networkId } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -560,7 +314,7 @@ export class NetworksClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.NetworkDetailResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.NetworkDetailOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -731,7 +485,7 @@ export class NetworksClient {
     /**
      * Only the fields sent change. A base network's name and filters cannot change; its CPOs and access settings can.
      *
-     * @param {Evcloud.emsp.NetworkPatch} request
+     * @param {Evcloud.emsp.NetworkUpdate} request
      * @param {NetworksClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Evcloud.BadRequestError}
@@ -751,16 +505,16 @@ export class NetworksClient {
      *     })
      */
     public update(
-        request: Evcloud.emsp.NetworkPatch,
+        request: Evcloud.emsp.NetworkUpdate,
         requestOptions?: NetworksClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.NetworkResponse> {
+    ): core.HttpResponsePromise<Evcloud.NetworkOut> {
         return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
-        request: Evcloud.emsp.NetworkPatch,
+        request: Evcloud.emsp.NetworkUpdate,
         requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.NetworkResponse>> {
+    ): Promise<core.WithRawResponse<Evcloud.NetworkOut>> {
         const { network_id: networkId, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -788,7 +542,7 @@ export class NetworksClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.NetworkResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.NetworkOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -841,131 +595,6 @@ export class NetworksClient {
     }
 
     /**
-     * Workspaces that ranked this base network, with its position in their ranking.
-     *
-     * @param {Evcloud.emsp.ListConsumersNetworksRequest} request
-     * @param {NetworksClient.RequestOptions} requestOptions - Request-specific configuration.
-     *
-     * @throws {@link Evcloud.UnauthorizedError}
-     * @throws {@link Evcloud.NotFoundError}
-     * @throws {@link Evcloud.UnprocessableEntityError}
-     * @throws {@link Evcloud.TooManyRequestsError}
-     * @throws {@link Evcloud.BadGatewayError}
-     * @throws {@link Evcloud.GatewayTimeoutError}
-     * @throws {@link errors.EvcloudError}
-     * @throws {@link errors.EvcloudTimeoutError}
-     *
-     * @example
-     *     await client.emsp.networks.listConsumers({
-     *         network_id: 20,
-     *         limit: 50
-     *     })
-     */
-    public async listConsumers(
-        request: Evcloud.emsp.ListConsumersNetworksRequest,
-        requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.NetworkConsumer, Evcloud.NetworkConsumerPage>> {
-        const list = core.HttpResponsePromise.interceptFunction(
-            async (
-                request: Evcloud.emsp.ListConsumersNetworksRequest,
-            ): Promise<core.WithRawResponse<Evcloud.NetworkConsumerPage>> => {
-                const { network_id: networkId, after, limit } = request;
-                const _queryParams: Record<string, unknown> = {
-                    after,
-                    limit,
-                };
-                const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
-                const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
-                    _authRequest.headers,
-                    this._options?.headers,
-                    requestOptions?.headers,
-                );
-                const _response = await core.fetcher({
-                    url: core.url.join(
-                        (await core.Supplier.get(this._options.baseUrl)) ??
-                            (await core.Supplier.get(this._options.environment)) ??
-                            environments.EvcloudEnvironment.Production,
-                        `emsp/networks/${core.url.encodePathParam(networkId)}/consumers`,
-                    ),
-                    method: "GET",
-                    headers: _headers,
-                    queryString: core.url
-                        .queryBuilder()
-                        .addMany(_queryParams)
-                        .mergeAdditional(requestOptions?.queryParams)
-                        .build(),
-                    timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-                    maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
-                    abortSignal: requestOptions?.abortSignal,
-                    fetchFn: this._options?.fetch,
-                    logging: this._options.logging,
-                });
-                if (_response.ok) {
-                    return { data: _response.body as Evcloud.NetworkConsumerPage, rawResponse: _response.rawResponse };
-                }
-                if (_response.error.reason === "status-code") {
-                    switch (_response.error.statusCode) {
-                        case 401:
-                            throw new Evcloud.UnauthorizedError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        case 404:
-                            throw new Evcloud.NotFoundError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        case 422:
-                            throw new Evcloud.UnprocessableEntityError(
-                                _response.error.body as Evcloud.HttpValidationError,
-                                _response.rawResponse,
-                            );
-                        case 429:
-                            throw new Evcloud.TooManyRequestsError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        case 502:
-                            throw new Evcloud.BadGatewayError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        case 504:
-                            throw new Evcloud.GatewayTimeoutError(
-                                _response.error.body as Evcloud.HttpErrorResponse,
-                                _response.rawResponse,
-                            );
-                        default:
-                            throw new errors.EvcloudError({
-                                statusCode: _response.error.statusCode,
-                                body: _response.error.body,
-                                rawResponse: _response.rawResponse,
-                            });
-                    }
-                }
-                return handleNonStatusCodeError(
-                    _response.error,
-                    _response.rawResponse,
-                    "GET",
-                    "/emsp/networks/{network_id}/consumers",
-                );
-            },
-        );
-        const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.NetworkConsumer, Evcloud.NetworkConsumerPage>({
-            response: dataWithRawResponse.data,
-            rawResponse: dataWithRawResponse.rawResponse,
-            hasNextPage: (response) =>
-                response?.pagination.end_cursor != null &&
-                !(typeof response?.pagination.end_cursor === "string" && response?.pagination.end_cursor === ""),
-            getItems: (response) => response?.data ?? [],
-            loadPage: (response) => {
-                return list(core.setObjectProperty(request, "after", response?.pagination.end_cursor));
-            },
-        });
-    }
-
-    /**
      * Partner locations of its CPOs, with its filters and active access rules applied.
      *
      * @param {Evcloud.emsp.ListLocationsNetworksRequest} request
@@ -990,11 +619,11 @@ export class NetworksClient {
     public async listLocations(
         request: Evcloud.emsp.ListLocationsNetworksRequest,
         requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.EmspGatewaySchemaNetworksLocationOut, Evcloud.EmspGatewaySchemaNetworksLocationPage>> {
+    ): Promise<core.Page<Evcloud.NetworkLocationOut, Evcloud.NetworkLocationPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Evcloud.emsp.ListLocationsNetworksRequest,
-            ): Promise<core.WithRawResponse<Evcloud.EmspGatewaySchemaNetworksLocationPage>> => {
+            ): Promise<core.WithRawResponse<Evcloud.NetworkLocationPage>> => {
                 const { network_id: networkId, country, after, limit } = request;
                 const _queryParams: Record<string, unknown> = {
                     country,
@@ -1028,10 +657,7 @@ export class NetworksClient {
                     logging: this._options.logging,
                 });
                 if (_response.ok) {
-                    return {
-                        data: _response.body as Evcloud.EmspGatewaySchemaNetworksLocationPage,
-                        rawResponse: _response.rawResponse,
-                    };
+                    return { data: _response.body as Evcloud.NetworkLocationPage, rawResponse: _response.rawResponse };
                 }
                 if (_response.error.reason === "status-code") {
                     switch (_response.error.statusCode) {
@@ -1082,10 +708,7 @@ export class NetworksClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<
-            Evcloud.EmspGatewaySchemaNetworksLocationOut,
-            Evcloud.EmspGatewaySchemaNetworksLocationPage
-        >({
+        return new core.Page<Evcloud.NetworkLocationOut, Evcloud.NetworkLocationPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -1107,7 +730,6 @@ export class NetworksClient {
      * @throws {@link Evcloud.BadRequestError}
      * @throws {@link Evcloud.UnauthorizedError}
      * @throws {@link Evcloud.NotFoundError}
-     * @throws {@link Evcloud.ConflictError}
      * @throws {@link Evcloud.UnprocessableEntityError}
      * @throws {@link Evcloud.TooManyRequestsError}
      * @throws {@link Evcloud.BadGatewayError}
@@ -1117,7 +739,6 @@ export class NetworksClient {
      *
      * @example
      *     await client.emsp.networks.setPublishState({
-     *         "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
      *         network_id: 20,
      *         published: true
      *     })
@@ -1125,20 +746,19 @@ export class NetworksClient {
     public setPublishState(
         request: Evcloud.emsp.PublishStateRequest,
         requestOptions?: NetworksClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.NetworkResponse> {
+    ): core.HttpResponsePromise<Evcloud.NetworkOut> {
         return core.HttpResponsePromise.fromPromise(this.__setPublishState(request, requestOptions));
     }
 
     private async __setPublishState(
         request: Evcloud.emsp.PublishStateRequest,
         requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.NetworkResponse>> {
-        const { network_id: networkId, "Idempotency-Key": idempotencyKey, ..._body } = request;
+    ): Promise<core.WithRawResponse<Evcloud.NetworkOut>> {
+        const { network_id: networkId, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Idempotency-Key": idempotencyKey }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -1161,7 +781,7 @@ export class NetworksClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.NetworkResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.NetworkOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -1178,11 +798,6 @@ export class NetworksClient {
                     );
                 case 404:
                     throw new Evcloud.NotFoundError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 409:
-                    throw new Evcloud.ConflictError(
                         _response.error.body as Evcloud.HttpErrorResponse,
                         _response.rawResponse,
                     );
@@ -1248,7 +863,7 @@ export class NetworksClient {
     public async listRules(
         request: Evcloud.emsp.ListRulesNetworksRequest,
         requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.NetworkRuleResponse, Evcloud.NetworkRulePage>> {
+    ): Promise<core.Page<Evcloud.NetworkRuleOut, Evcloud.NetworkRulePage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Evcloud.emsp.ListRulesNetworksRequest,
@@ -1337,7 +952,7 @@ export class NetworksClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.NetworkRuleResponse, Evcloud.NetworkRulePage>({
+        return new core.Page<Evcloud.NetworkRuleOut, Evcloud.NetworkRulePage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -1353,13 +968,12 @@ export class NetworksClient {
     /**
      * INCLUDE shows only the listed locations, EXCLUDE hides them, optionally within an ``effective_from``/``effective_until`` window.
      *
-     * @param {Evcloud.emsp.NetworkRuleCreateRequest} request
+     * @param {Evcloud.emsp.NetworkRuleCreate} request
      * @param {NetworksClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Evcloud.BadRequestError}
      * @throws {@link Evcloud.UnauthorizedError}
      * @throws {@link Evcloud.NotFoundError}
-     * @throws {@link Evcloud.ConflictError}
      * @throws {@link Evcloud.UnprocessableEntityError}
      * @throws {@link Evcloud.TooManyRequestsError}
      * @throws {@link Evcloud.BadGatewayError}
@@ -1369,29 +983,27 @@ export class NetworksClient {
      *
      * @example
      *     await client.emsp.networks.createRule({
-     *         "Idempotency-Key": "5d1f7c2e-8b3a-4e6f-9c0d-1a2b3c4d5e6f",
      *         network_id: 21,
      *         rule_type: "EXCLUDE",
      *         location_ids: ["LOC-AMS-001"]
      *     })
      */
     public createRule(
-        request: Evcloud.emsp.NetworkRuleCreateRequest,
+        request: Evcloud.emsp.NetworkRuleCreate,
         requestOptions?: NetworksClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.NetworkRuleResponse> {
+    ): core.HttpResponsePromise<Evcloud.NetworkRuleOut> {
         return core.HttpResponsePromise.fromPromise(this.__createRule(request, requestOptions));
     }
 
     private async __createRule(
-        request: Evcloud.emsp.NetworkRuleCreateRequest,
+        request: Evcloud.emsp.NetworkRuleCreate,
         requestOptions?: NetworksClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.NetworkRuleResponse>> {
-        const { network_id: networkId, "Idempotency-Key": idempotencyKey, ..._body } = request;
+    ): Promise<core.WithRawResponse<Evcloud.NetworkRuleOut>> {
+        const { network_id: networkId, ..._body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
             this._options?.headers,
-            mergeOnlyDefinedHeaders({ "Idempotency-Key": idempotencyKey }),
             requestOptions?.headers,
         );
         const _response = await core.fetcher({
@@ -1408,13 +1020,13 @@ export class NetworksClient {
             requestType: "json",
             body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
             timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
-            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            maxRetries: 0,
             abortSignal: requestOptions?.abortSignal,
             fetchFn: this._options?.fetch,
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.NetworkRuleResponse, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.NetworkRuleOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {
@@ -1431,11 +1043,6 @@ export class NetworksClient {
                     );
                 case 404:
                     throw new Evcloud.NotFoundError(
-                        _response.error.body as Evcloud.HttpErrorResponse,
-                        _response.rawResponse,
-                    );
-                case 409:
-                    throw new Evcloud.ConflictError(
                         _response.error.body as Evcloud.HttpErrorResponse,
                         _response.rawResponse,
                     );
