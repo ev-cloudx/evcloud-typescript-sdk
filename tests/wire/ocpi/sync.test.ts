@@ -1003,6 +1003,190 @@ describe("SyncClient", () => {
         }).rejects.toThrow(Evcloud.GatewayTimeoutError);
     });
 
+    test("push_all_tokens (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {
+            partner_id: 7,
+            module: "tokens",
+            status: "SUCCESS",
+            total: 12,
+            succeeded: 12,
+            failed: 0,
+            duration_ms: 1480,
+            failures: [],
+        };
+
+        server
+            .mockEndpoint()
+            .post("/ocpi/sync/221/emsp/tokens/push-all")
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.ocpi.sync.pushAllTokens({
+            version: "221",
+            partner_id: 7,
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("push_all_tokens (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/ocpi/sync/211/emsp/tokens/push-all")
+            .respondWith()
+            .statusCode(400)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.ocpi.sync.pushAllTokens({
+                version: "211",
+                partner_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.BadRequestError);
+    });
+
+    test("push_all_tokens (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/ocpi/sync/211/emsp/tokens/push-all")
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.ocpi.sync.pushAllTokens({
+                version: "211",
+                partner_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.UnauthorizedError);
+    });
+
+    test("push_all_tokens (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/ocpi/sync/211/emsp/tokens/push-all")
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.ocpi.sync.pushAllTokens({
+                version: "211",
+                partner_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.NotFoundError);
+    });
+
+    test("push_all_tokens (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .post("/ocpi/sync/211/emsp/tokens/push-all")
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.ocpi.sync.pushAllTokens({
+                version: "211",
+                partner_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.UnprocessableEntityError);
+    });
+
+    test("push_all_tokens (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/ocpi/sync/211/emsp/tokens/push-all")
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.ocpi.sync.pushAllTokens({
+                version: "211",
+                partner_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.TooManyRequestsError);
+    });
+
+    test("push_all_tokens (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/ocpi/sync/211/emsp/tokens/push-all")
+            .respondWith()
+            .statusCode(502)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.ocpi.sync.pushAllTokens({
+                version: "211",
+                partner_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.BadGatewayError);
+    });
+
+    test("push_all_tokens (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/ocpi/sync/211/emsp/tokens/push-all")
+            .respondWith()
+            .statusCode(504)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.ocpi.sync.pushAllTokens({
+                version: "211",
+                partner_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.GatewayTimeoutError);
+    });
+
     test("pull_tokens (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });

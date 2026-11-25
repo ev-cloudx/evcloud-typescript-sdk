@@ -57,9 +57,17 @@ export class SyncClient {
         request: Evcloud.ocpi.PushLocationSyncRequest,
         requestOptions?: SyncClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.SyncPushResponse>> {
-        const { version, location_id: locationId, partner_id: partnerId } = request;
+        const {
+            version,
+            location_id: locationId,
+            partner_id: partnerId,
+            owner_country_code: ownerCountryCode,
+            owner_party_id: ownerPartyId,
+        } = request;
         const _queryParams: Record<string, unknown> = {
             partner_id: partnerId,
+            owner_country_code: ownerCountryCode,
+            owner_party_id: ownerPartyId,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -179,9 +187,17 @@ export class SyncClient {
         request: Evcloud.ocpi.PushCdrSyncRequest,
         requestOptions?: SyncClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.SyncPushResponse>> {
-        const { version, cdr_id: cdrId, partner_id: partnerId } = request;
+        const {
+            version,
+            cdr_id: cdrId,
+            partner_id: partnerId,
+            owner_country_code: ownerCountryCode,
+            owner_party_id: ownerPartyId,
+        } = request;
         const _queryParams: Record<string, unknown> = {
             partner_id: partnerId,
+            owner_country_code: ownerCountryCode,
+            owner_party_id: ownerPartyId,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -301,9 +317,17 @@ export class SyncClient {
         request: Evcloud.ocpi.PushTariffSyncRequest,
         requestOptions?: SyncClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.SyncPushResponse>> {
-        const { version, tariff_id: tariffId, partner_id: partnerId } = request;
+        const {
+            version,
+            tariff_id: tariffId,
+            partner_id: partnerId,
+            owner_country_code: ownerCountryCode,
+            owner_party_id: ownerPartyId,
+        } = request;
         const _queryParams: Record<string, unknown> = {
             partner_id: partnerId,
+            owner_country_code: ownerCountryCode,
+            owner_party_id: ownerPartyId,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -429,9 +453,18 @@ export class SyncClient {
         request: Evcloud.ocpi.PushSessionSyncRequest,
         requestOptions?: SyncClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.SyncPushResponse>> {
-        const { version, session_id: sessionId, partner_id: partnerId, body: _body } = request;
+        const {
+            version,
+            session_id: sessionId,
+            partner_id: partnerId,
+            owner_country_code: ownerCountryCode,
+            owner_party_id: ownerPartyId,
+            body: _body,
+        } = request;
         const _queryParams: Record<string, unknown> = {
             partner_id: partnerId,
+            owner_country_code: ownerCountryCode,
+            owner_party_id: ownerPartyId,
         };
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -650,6 +683,127 @@ export class SyncClient {
             _response.rawResponse,
             "POST",
             "/ocpi/sync/{version}/emsp/tokens/{token_uid}/push",
+        );
+    }
+
+    /**
+     * Sends all of the workspace's tokens to a partner CPO, one PUT per token. ``failures`` lists only the tokens that were not delivered. ``partner_id`` is the roaming partner id (``roaming_partner_id``), not the operation id from ``GET /ocpi/partners``.
+     *
+     * @param {Evcloud.ocpi.PushAllTokensSyncRequest} request
+     * @param {SyncClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Evcloud.BadRequestError}
+     * @throws {@link Evcloud.UnauthorizedError}
+     * @throws {@link Evcloud.NotFoundError}
+     * @throws {@link Evcloud.UnprocessableEntityError}
+     * @throws {@link Evcloud.TooManyRequestsError}
+     * @throws {@link Evcloud.BadGatewayError}
+     * @throws {@link Evcloud.GatewayTimeoutError}
+     * @throws {@link errors.EvcloudError}
+     * @throws {@link errors.EvcloudTimeoutError}
+     *
+     * @example
+     *     await client.ocpi.sync.pushAllTokens({
+     *         version: "221",
+     *         partner_id: 7
+     *     })
+     */
+    public pushAllTokens(
+        request: Evcloud.ocpi.PushAllTokensSyncRequest,
+        requestOptions?: SyncClient.RequestOptions,
+    ): core.HttpResponsePromise<Evcloud.SyncPushAllResponse> {
+        return core.HttpResponsePromise.fromPromise(this.__pushAllTokens(request, requestOptions));
+    }
+
+    private async __pushAllTokens(
+        request: Evcloud.ocpi.PushAllTokensSyncRequest,
+        requestOptions?: SyncClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Evcloud.SyncPushAllResponse>> {
+        const { version, partner_id: partnerId } = request;
+        const _queryParams: Record<string, unknown> = {
+            partner_id: partnerId,
+        };
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.EvcloudEnvironment.Production,
+                `ocpi/sync/${core.url.encodePathParam(version)}/emsp/tokens/push-all`,
+            ),
+            method: "POST",
+            headers: _headers,
+            queryString: core.url
+                .queryBuilder()
+                .addMany(_queryParams)
+                .mergeAdditional(requestOptions?.queryParams)
+                .build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: 0,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Evcloud.SyncPushAllResponse, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 400:
+                    throw new Evcloud.BadRequestError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 401:
+                    throw new Evcloud.UnauthorizedError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 404:
+                    throw new Evcloud.NotFoundError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 422:
+                    throw new Evcloud.UnprocessableEntityError(
+                        _response.error.body as Evcloud.HttpValidationError,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new Evcloud.TooManyRequestsError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 502:
+                    throw new Evcloud.BadGatewayError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 504:
+                    throw new Evcloud.GatewayTimeoutError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.EvcloudError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/ocpi/sync/{version}/emsp/tokens/push-all",
         );
     }
 

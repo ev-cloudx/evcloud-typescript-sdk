@@ -5,6 +5,7 @@ export * from "./PullLocationsSyncRequestVersion.js";
 export * from "./PullSessionsSyncRequestVersion.js";
 export * from "./PullTariffsSyncRequestVersion.js";
 export * from "./PullTokensSyncRequestVersion.js";
+export * from "./PushAllTokensSyncRequestVersion.js";
 export * from "./PushCdrSyncRequestVersion.js";
 export * from "./PushLocationSyncRequestVersion.js";
 export * from "./PushSessionSyncRequestVersion.js";

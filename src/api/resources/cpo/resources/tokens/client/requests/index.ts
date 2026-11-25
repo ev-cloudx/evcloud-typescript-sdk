@@ -1,4 +1,5 @@
 export type { DeleteTokensRequest } from "./DeleteTokensRequest.js";
+export type { GetTokensRequest } from "./GetTokensRequest.js";
 export type { TokenActivate } from "./TokenActivate.js";
 export type { TokenBlock } from "./TokenBlock.js";
 export { TokenCreate } from "./TokenCreate.js";

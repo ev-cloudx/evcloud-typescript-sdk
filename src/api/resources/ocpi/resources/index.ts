@@ -1,9 +1,14 @@
+export * from "./connections/client/requests/index.js";
+export * as connections from "./connections/index.js";
+export * from "./connections/types/index.js";
 export * from "./cpoData/client/requests/index.js";
 export * as cpoData from "./cpoData/index.js";
 export * from "./cpoData/types/index.js";
 export * from "./credentials/client/requests/index.js";
 export * as credentials from "./credentials/index.js";
 export * from "./credentials/types/index.js";
+export * from "./credentialTokens/client/requests/index.js";
+export * as credentialTokens from "./credentialTokens/index.js";
 export * from "./emsp/client/requests/index.js";
 export * as emsp from "./emsp/index.js";
 export * from "./emsp/types/index.js";

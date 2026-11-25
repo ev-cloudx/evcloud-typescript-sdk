@@ -1,6 +1,6 @@
 {
     "name": "evcloud",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "private": false,
     "repository": {
         "type": "git",
@@ -318,6 +318,28 @@
                 "default": "./dist/cjs/api/resources/ocpi/resources/credentials/exports.js"
             },
             "default": "./dist/cjs/api/resources/ocpi/resources/credentials/exports.js"
+        },
+        "./ocpi/credentialTokens": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/resources/credentialTokens/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/resources/credentialTokens/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/resources/credentialTokens/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/resources/credentialTokens/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/resources/credentialTokens/exports.js"
+        },
+        "./ocpi/connections": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpi/resources/connections/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpi/resources/connections/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpi/resources/connections/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpi/resources/connections/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpi/resources/connections/exports.js"
         },
         "./ocpi/cpoData": {
             "import": {

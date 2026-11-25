@@ -2,8 +2,10 @@
 
 import type { BaseClientOptions } from "../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../BaseClient.js";
+import { ConnectionsClient } from "../resources/connections/client/Client.js";
 import { CpoDataClient } from "../resources/cpoData/client/Client.js";
 import { CredentialsClient } from "../resources/credentials/client/Client.js";
+import { CredentialTokensClient } from "../resources/credentialTokens/client/Client.js";
 import { EmspClient } from "../resources/emsp/client/Client.js";
 import { InvitesClient } from "../resources/invites/client/Client.js";
 import { PartnersClient } from "../resources/partners/client/Client.js";
@@ -18,6 +20,8 @@ export class OcpiClient {
     protected _invites: InvitesClient | undefined;
     protected _partners: PartnersClient | undefined;
     protected _credentials: CredentialsClient | undefined;
+    protected _credentialTokens: CredentialTokensClient | undefined;
+    protected _connections: ConnectionsClient | undefined;
     protected _cpoData: CpoDataClient | undefined;
     protected _emsp: EmspClient | undefined;
     protected _sync: SyncClient | undefined;
@@ -36,6 +40,14 @@ export class OcpiClient {
 
     public get credentials(): CredentialsClient {
         return (this._credentials ??= new CredentialsClient(this._options));
+    }
+
+    public get credentialTokens(): CredentialTokensClient {
+        return (this._credentialTokens ??= new CredentialTokensClient(this._options));
+    }
+
+    public get connections(): ConnectionsClient {
+        return (this._connections ??= new ConnectionsClient(this._options));
     }
 
     public get cpoData(): CpoDataClient {

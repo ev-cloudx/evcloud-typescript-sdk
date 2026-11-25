@@ -166,6 +166,133 @@ describe("TokensClient", () => {
         }).rejects.toThrow(Evcloud.GatewayTimeoutError);
     });
 
+    test("get (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {
+            id: 1,
+            workspace_id: "550e8400-e29b-41d4-a716-446655440000",
+            id_token: "ABC123",
+            id_token_type: "ISO14443",
+            status: "Accepted",
+            description: "Depot",
+            revision: 2,
+        };
+
+        server.mockEndpoint().get("/cpo/tokens/1").respondWith().statusCode(200).jsonBody(rawResponseBody).build();
+
+        const response = await client.cpo.tokens.get({
+            token_id: 1,
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("get (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server.mockEndpoint().get("/cpo/tokens/1").respondWith().statusCode(401).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.cpo.tokens.get({
+                token_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.UnauthorizedError);
+    });
+
+    test("get (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server.mockEndpoint().get("/cpo/tokens/1").respondWith().statusCode(403).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.cpo.tokens.get({
+                token_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.ForbiddenError);
+    });
+
+    test("get (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server.mockEndpoint().get("/cpo/tokens/1").respondWith().statusCode(404).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.cpo.tokens.get({
+                token_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.NotFoundError);
+    });
+
+    test("get (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = {};
+
+        server.mockEndpoint().get("/cpo/tokens/1").respondWith().statusCode(422).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.cpo.tokens.get({
+                token_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.UnprocessableEntityError);
+    });
+
+    test("get (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server.mockEndpoint().get("/cpo/tokens/1").respondWith().statusCode(429).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.cpo.tokens.get({
+                token_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.TooManyRequestsError);
+    });
+
+    test("get (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server.mockEndpoint().get("/cpo/tokens/1").respondWith().statusCode(502).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.cpo.tokens.get({
+                token_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.BadGatewayError);
+    });
+
+    test("get (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+
+        const rawResponseBody = { detail: "detail" };
+
+        server.mockEndpoint().get("/cpo/tokens/1").respondWith().statusCode(504).jsonBody(rawResponseBody).build();
+
+        await expect(async () => {
+            return await client.cpo.tokens.get({
+                token_id: 1,
+            });
+        }).rejects.toThrow(Evcloud.GatewayTimeoutError);
+    });
+
     test("delete (1)", async () => {
         const server = mockServerPool.createServer();
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });

@@ -23,5 +23,9 @@ export interface PushSessionSyncRequest {
     session_id: string;
     /** Roaming partner to talk to: the ``roaming_partner_id`` from ``GET /ocpi/partners``, not its ``id``. */
     partner_id: number;
+    /** Country code of the party that owns the object, when the workspace has several. Set together with ``owner_party_id``. */
+    owner_country_code?: string | null;
+    /** Party id of the party that owns the object. Set together with ``owner_country_code``. */
+    owner_party_id?: string | null;
     body: Evcloud.SyncPatchRequest | null;
 }

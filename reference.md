@@ -2966,6 +2966,71 @@ await client.cpo.tokens.create({
 </dl>
 </details>
 
+<details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">get</a>({ ...params }) -> Evcloud.GatewayToken</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. One card or idTag of this workspace.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.tokens.get({
+    token_id: 1
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.GetTokensRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `TokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 <details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">delete</a>({ ...params }) -> void</code></summary>
 <dl>
 <dd>
@@ -6630,6 +6695,209 @@ await client.ocpi.credentials.pullVersions({
 </dl>
 </details>
 
+## Ocpi CredentialTokens
+<details><summary><code>client.ocpi.credentialTokens.<a href="/src/api/resources/ocpi/resources/credentialTokens/client/Client.ts">issue</a>({ ...params }) -> Evcloud.CredentialTokenIssueResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Mints Token A, B or C for a partner. The token is returned once.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocpi.credentialTokens.issue({
+    type: "A",
+    partner_id: 7,
+    role: "CPO",
+    version: "2.2.1"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.ocpi.CredentialTokenIssueRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CredentialTokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocpi.credentialTokens.<a href="/src/api/resources/ocpi/resources/credentialTokens/client/Client.ts">revoke</a>({ ...params }) -> Evcloud.CredentialTokenRevokeResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Deactivates a partner's unused Token A or B. Answers ``tokens_revoked: 0`` when nothing was live; 409 for a Token B once the partner holds a Token C.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocpi.credentialTokens.revoke({
+    type: "B",
+    partner_id: 7
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.ocpi.CredentialTokenRevokeRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CredentialTokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Ocpi Connections
+<details><summary><code>client.ocpi.connections.<a href="/src/api/resources/ocpi/resources/connections/client/Client.ts">check</a>({ ...params }) -> Evcloud.ConnectionCheckResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Calls the partner with the stored credentials token (GET only) and reports each call. Changes nothing on either side.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocpi.connections.check({
+    version: "221",
+    role: "cpo",
+    partner_id: 7
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.ocpi.ConnectionCheckRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ConnectionsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Ocpi CpoData
 <details><summary><code>client.ocpi.cpoData.<a href="/src/api/resources/ocpi/resources/cpoData/client/Client.ts">upsertLocation</a>({ ...params }) -> Evcloud.LocationWriteResponse</code></summary>
 <dl>
@@ -8353,6 +8621,72 @@ await client.ocpi.sync.pushToken({
 <dd>
 
 **request:** `Evcloud.ocpi.PushTokenSyncRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `SyncClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocpi.sync.<a href="/src/api/resources/ocpi/resources/sync/client/Client.ts">pushAllTokens</a>({ ...params }) -> Evcloud.SyncPushAllResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sends all of the workspace's tokens to a partner CPO, one PUT per token. ``failures`` lists only the tokens that were not delivered. ``partner_id`` is the roaming partner id (``roaming_partner_id``), not the operation id from ``GET /ocpi/partners``.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocpi.sync.pushAllTokens({
+    version: "221",
+    partner_id: 7
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.ocpi.PushAllTokensSyncRequest` 
     
 </dd>
 </dl>

@@ -5,6 +5,7 @@ export type { PullLocationsSyncRequest } from "./PullLocationsSyncRequest.js";
 export type { PullSessionsSyncRequest } from "./PullSessionsSyncRequest.js";
 export type { PullTariffsSyncRequest } from "./PullTariffsSyncRequest.js";
 export type { PullTokensSyncRequest } from "./PullTokensSyncRequest.js";
+export type { PushAllTokensSyncRequest } from "./PushAllTokensSyncRequest.js";
 export type { PushCdrSyncRequest } from "./PushCdrSyncRequest.js";
 export type { PushLocationSyncRequest } from "./PushLocationSyncRequest.js";
 export type { PushSessionSyncRequest } from "./PushSessionSyncRequest.js";

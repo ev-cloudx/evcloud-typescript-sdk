@@ -130,6 +130,114 @@ export class TokensClient {
     }
 
     /**
+     * Admin only. One card or idTag of this workspace.
+     *
+     * @param {Evcloud.cpo.GetTokensRequest} request
+     * @param {TokensClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Evcloud.UnauthorizedError}
+     * @throws {@link Evcloud.ForbiddenError}
+     * @throws {@link Evcloud.NotFoundError}
+     * @throws {@link Evcloud.UnprocessableEntityError}
+     * @throws {@link Evcloud.TooManyRequestsError}
+     * @throws {@link Evcloud.BadGatewayError}
+     * @throws {@link Evcloud.GatewayTimeoutError}
+     * @throws {@link errors.EvcloudError}
+     * @throws {@link errors.EvcloudTimeoutError}
+     *
+     * @example
+     *     await client.cpo.tokens.get({
+     *         token_id: 1
+     *     })
+     */
+    public get(
+        request: Evcloud.cpo.GetTokensRequest,
+        requestOptions?: TokensClient.RequestOptions,
+    ): core.HttpResponsePromise<Evcloud.GatewayToken> {
+        return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
+    }
+
+    private async __get(
+        request: Evcloud.cpo.GetTokensRequest,
+        requestOptions?: TokensClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Evcloud.GatewayToken>> {
+        const { token_id: tokenId } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.EvcloudEnvironment.Production,
+                `cpo/tokens/${core.url.encodePathParam(tokenId)}`,
+            ),
+            method: "GET",
+            headers: _headers,
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: requestOptions?.maxRetries ?? this._options?.maxRetries,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Evcloud.GatewayToken, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Evcloud.UnauthorizedError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new Evcloud.ForbiddenError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 404:
+                    throw new Evcloud.NotFoundError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 422:
+                    throw new Evcloud.UnprocessableEntityError(
+                        _response.error.body as Evcloud.HttpValidationError,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new Evcloud.TooManyRequestsError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 502:
+                    throw new Evcloud.BadGatewayError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 504:
+                    throw new Evcloud.GatewayTimeoutError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.EvcloudError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(_response.error, _response.rawResponse, "GET", "/cpo/tokens/{token_id}");
+    }
+
+    /**
      * Admin only. Soft-deletes the token, or removes it with ``hard=true``. Chargers that accepted the card are told to clear their cache.
      *
      * @param {Evcloud.cpo.DeleteTokensRequest} request
