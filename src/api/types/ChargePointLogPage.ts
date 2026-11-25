@@ -3,10 +3,10 @@
 import type * as Evcloud from "../index.js";
 
 /**
- * One page of the workspace's backend sessions, newest first.
+ * One page of the workspace's charge point frames, newest first.
  */
-export interface BackendSessionPage {
-    items: Evcloud.BackendSessionOut[];
+export interface ChargePointLogPage {
+    items: Evcloud.ChargePointLogOut[];
     offset: number;
     limit: number;
     next_offset?: (number | null) | undefined;

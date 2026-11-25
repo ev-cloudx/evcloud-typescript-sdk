@@ -22,10 +22,12 @@ export interface EmspTariffOut {
     min_price?: (Evcloud.PriceLimit | null) | undefined;
     max_price?: (Evcloud.PriceLimit | null) | undefined;
     preauthorize_amount?: (string | null) | undefined;
+    source: EmspTariffOut.Source;
     /** Accepts any additional properties */
     [key: string]: any;
 }
 
 export namespace EmspTariffOut {
     export type TaxIncluded = ("YES" | "NO" | "N/A") | unknown;
+    export type Source = ("OWN_OCPP" | "PARTNER_OCPI") | unknown;
 }

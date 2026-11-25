@@ -18,4 +18,15 @@ export interface ChargerPointUpdate {
     firmware_version?: string | null;
     enabled?: boolean | null;
     metadata?: Record<string, unknown> | null;
+    ocpp_version?: ChargerPointUpdate.OcppVersion | null;
+    group_id?: string | null;
+}
+
+export namespace ChargerPointUpdate {
+    export const OcppVersion = {
+        Ocpp16: "ocpp1.6",
+        Ocpp201: "ocpp2.0.1",
+        Ocpp21: "ocpp2.1",
+    } as const;
+    export type OcppVersion = (typeof OcppVersion)[keyof typeof OcppVersion];
 }

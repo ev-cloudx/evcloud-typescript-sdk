@@ -8,5 +8,18 @@
  */
 export interface AvailabilityRequest {
     network_id?: number | null;
+    source?: AvailabilityRequest.Source.Item[] | null;
     location_ids: string[];
+}
+
+export namespace AvailabilityRequest {
+    export type Source = Source.Item[];
+
+    export namespace Source {
+        export const Item = {
+            Ocpp: "ocpp",
+            Ocpi: "ocpi",
+        } as const;
+        export type Item = (typeof Item)[keyof typeof Item];
+    }
 }

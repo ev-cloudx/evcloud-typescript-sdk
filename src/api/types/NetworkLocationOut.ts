@@ -16,8 +16,12 @@ export interface NetworkLocationOut {
     time_zone?: (string | null) | undefined;
     parking_type?: (string | null) | undefined;
     publish?: (boolean | null) | undefined;
-    source: string;
+    source: NetworkLocationOut.Source;
     last_updated: string;
     /** Accepts any additional properties */
     [key: string]: any;
+}
+
+export namespace NetworkLocationOut {
+    export type Source = ("OWN_OCPP" | "PARTNER_OCPI") | unknown;
 }

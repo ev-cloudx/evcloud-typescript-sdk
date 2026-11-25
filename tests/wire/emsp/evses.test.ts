@@ -13,6 +13,7 @@ describe("EvsesClient", () => {
             location: { country_code: "NL", party_id: "ABC", location_id: "LOC-AMS-001" },
             evse_uid: "EVSE-AMS-001-1",
             evse_id: "NL*ABC*E1001*1",
+            source: "PARTNER_OCPI",
             status: "AVAILABLE",
             status_updated_at: "2026-09-30T10:00:00Z",
             connectors: [

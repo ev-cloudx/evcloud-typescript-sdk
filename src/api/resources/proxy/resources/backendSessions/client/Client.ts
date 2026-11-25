@@ -42,11 +42,11 @@ export class BackendSessionsClient {
     public async list(
         request: Evcloud.proxy.ListBackendSessionsRequest = {},
         requestOptions?: BackendSessionsClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.BackendSessionOut, Evcloud.BackendSessionPage>> {
+    ): Promise<core.Page<Evcloud.BackendConnectionOut, Evcloud.BackendConnectionPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Evcloud.proxy.ListBackendSessionsRequest,
-            ): Promise<core.WithRawResponse<Evcloud.BackendSessionPage>> => {
+            ): Promise<core.WithRawResponse<Evcloud.BackendConnectionPage>> => {
                 const {
                     charge_point_id: chargePointId,
                     backend_id: backendId,
@@ -92,7 +92,10 @@ export class BackendSessionsClient {
                     logging: this._options.logging,
                 });
                 if (_response.ok) {
-                    return { data: _response.body as Evcloud.BackendSessionPage, rawResponse: _response.rawResponse };
+                    return {
+                        data: _response.body as Evcloud.BackendConnectionPage,
+                        rawResponse: _response.rawResponse,
+                    };
                 }
                 if (_response.error.reason === "status-code") {
                     switch (_response.error.statusCode) {
@@ -138,7 +141,7 @@ export class BackendSessionsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.BackendSessionOut, Evcloud.BackendSessionPage>({
+        return new core.Page<Evcloud.BackendConnectionOut, Evcloud.BackendConnectionPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -174,14 +177,14 @@ export class BackendSessionsClient {
     public get(
         request: Evcloud.proxy.GetBackendSessionsRequest,
         requestOptions?: BackendSessionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.BackendSessionOut> {
+    ): core.HttpResponsePromise<Evcloud.BackendConnectionOut> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Evcloud.proxy.GetBackendSessionsRequest,
         requestOptions?: BackendSessionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.BackendSessionOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.BackendConnectionOut>> {
         const { backend_session_id: backendSessionId } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -206,7 +209,7 @@ export class BackendSessionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.BackendSessionOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.BackendConnectionOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

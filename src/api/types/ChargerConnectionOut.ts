@@ -3,8 +3,8 @@
 /**
  * One charger WebSocket connection; ``disconnected_at`` null while it is open.
  */
-export interface ChargeSessionOut {
-    ocpp_version?: (ChargeSessionOut.OcppVersion | null) | undefined;
+export interface ChargerConnectionOut {
+    ocpp_version?: (ChargerConnectionOut.OcppVersion | null) | undefined;
     domain?: (string | null) | undefined;
     remote_addr?: (string | null) | undefined;
     worker_id?: (string | null) | undefined;
@@ -19,6 +19,6 @@ export interface ChargeSessionOut {
     [key: string]: any;
 }
 
-export namespace ChargeSessionOut {
+export namespace ChargerConnectionOut {
     export type OcppVersion = ("ocpp1.6" | "ocpp2.0.1" | "ocpp2.1") | unknown;
 }

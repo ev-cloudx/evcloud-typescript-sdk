@@ -5,6 +5,7 @@ import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } 
 import { BackendSessionsClient } from "../resources/backendSessions/client/Client.js";
 import { BackendsClient } from "../resources/backends/client/Client.js";
 import { ChargerPointsClient } from "../resources/chargerPoints/client/Client.js";
+import { ChargerRegistryClient } from "../resources/chargerRegistry/client/Client.js";
 import { ChargeSessionsClient } from "../resources/chargeSessions/client/Client.js";
 import { ConfigurationClient } from "../resources/configuration/client/Client.js";
 import { FrameLogsClient } from "../resources/frameLogs/client/Client.js";
@@ -21,6 +22,7 @@ export class ProxyClient {
     protected _routingPolicies: RoutingPoliciesClient | undefined;
     protected _routingRules: RoutingRulesClient | undefined;
     protected _chargerPoints: ChargerPointsClient | undefined;
+    protected _chargerRegistry: ChargerRegistryClient | undefined;
     protected _chargeSessions: ChargeSessionsClient | undefined;
     protected _backendSessions: BackendSessionsClient | undefined;
     protected _frameLogs: FrameLogsClient | undefined;
@@ -44,6 +46,10 @@ export class ProxyClient {
 
     public get chargerPoints(): ChargerPointsClient {
         return (this._chargerPoints ??= new ChargerPointsClient(this._options));
+    }
+
+    public get chargerRegistry(): ChargerRegistryClient {
+        return (this._chargerRegistry ??= new ChargerRegistryClient(this._options));
     }
 
     public get chargeSessions(): ChargeSessionsClient {

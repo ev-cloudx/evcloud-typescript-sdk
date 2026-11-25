@@ -5,6 +5,8 @@ export * as backends from "./backends/index.js";
 export * from "./chargerPoints/client/requests/index.js";
 export * as chargerPoints from "./chargerPoints/index.js";
 export * from "./chargerPoints/types/index.js";
+export * from "./chargerRegistry/client/requests/index.js";
+export * as chargerRegistry from "./chargerRegistry/index.js";
 export * from "./chargeSessions/client/requests/index.js";
 export * as chargeSessions from "./chargeSessions/index.js";
 export * from "./configuration/client/requests/index.js";

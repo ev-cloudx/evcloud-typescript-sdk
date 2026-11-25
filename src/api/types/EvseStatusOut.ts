@@ -13,6 +13,11 @@ export interface EvseStatusOut {
     status_updated_at?: (string | null) | undefined;
     connectors: Evcloud.EvseConnectorStatus[];
     capabilities: string[];
+    source: EvseStatusOut.Source;
     /** Accepts any additional properties */
     [key: string]: any;
+}
+
+export namespace EvseStatusOut {
+    export type Source = ("OWN_OCPP" | "PARTNER_OCPI") | unknown;
 }

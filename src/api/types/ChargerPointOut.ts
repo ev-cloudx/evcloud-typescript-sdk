@@ -29,7 +29,7 @@ export interface ChargerPointOut {
     client_cert_revoked_sha256?: (string[] | null) | undefined;
     pending_security_profile?: (number | null) | undefined;
     pending_security_profile_expires_at?: (string | null) | undefined;
-    profile_id?: (string | null) | undefined;
+    group_id?: (string | null) | undefined;
     registration_source?: (ChargerPointOut.RegistrationSource | null) | undefined;
     discovered_at?: (string | null) | undefined;
     last_auth_failure?: (Evcloud.StationAuthFailureOut | null) | undefined;

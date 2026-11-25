@@ -482,7 +482,7 @@ export class ConnectorsClient {
     /**
      * Changes only the fields sent; send null to clear a field. Connectors of partner EVSEs are read-only (409).
      *
-     * @param {Evcloud.cpo.ConnectorUpdate} request
+     * @param {Evcloud.cpo.UpdateConnectorsRequest} request
      * @param {ConnectorsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Evcloud.UnauthorizedError}
@@ -498,21 +498,23 @@ export class ConnectorsClient {
      * @example
      *     await client.cpo.connectors.update({
      *         connector_db_id: 201,
-     *         max_electric_power: 11000
+     *         body: {
+     *             max_electric_power: 11000
+     *         }
      *     })
      */
     public update(
-        request: Evcloud.cpo.ConnectorUpdate,
+        request: Evcloud.cpo.UpdateConnectorsRequest,
         requestOptions?: ConnectorsClient.RequestOptions,
     ): core.HttpResponsePromise<Evcloud.CpoConnectorOut> {
         return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
-        request: Evcloud.cpo.ConnectorUpdate,
+        request: Evcloud.cpo.UpdateConnectorsRequest,
         requestOptions?: ConnectorsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.CpoConnectorOut>> {
-        const { connector_db_id: connectorDbId, ..._body } = request;
+        const { connector_db_id: connectorDbId, body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,

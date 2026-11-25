@@ -460,7 +460,7 @@ export class EvsesClient {
     /**
      * Changes only the fields sent; send null to clear a field. Guard it with ``expected_revision`` to avoid overwriting someone else's change.
      *
-     * @param {Evcloud.cpo.EvseUpdate} request
+     * @param {Evcloud.cpo.UpdateEvsesRequest} request
      * @param {EvsesClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Evcloud.UnauthorizedError}
@@ -476,22 +476,24 @@ export class EvsesClient {
      * @example
      *     await client.cpo.evses.update({
      *         id: 101,
-     *         floor_level: "-1",
-     *         expected_revision: 1
+     *         body: {
+     *             floor_level: "-1",
+     *             expected_revision: 1
+     *         }
      *     })
      */
     public update(
-        request: Evcloud.cpo.EvseUpdate,
+        request: Evcloud.cpo.UpdateEvsesRequest,
         requestOptions?: EvsesClient.RequestOptions,
     ): core.HttpResponsePromise<Evcloud.CpoEvseOut> {
         return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
-        request: Evcloud.cpo.EvseUpdate,
+        request: Evcloud.cpo.UpdateEvsesRequest,
         requestOptions?: EvsesClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.CpoEvseOut>> {
-        const { id, ..._body } = request;
+        const { id, body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,

@@ -1,5 +1,5 @@
-export type { AvailabilityRequest } from "./AvailabilityRequest.js";
-export type { BatchRequest } from "./BatchRequest.js";
+export { AvailabilityRequest } from "./AvailabilityRequest.js";
+export { BatchRequest } from "./BatchRequest.js";
 export type { ClusterLocationsRequest } from "./ClusterLocationsRequest.js";
 export type { GetByUidLocationsRequest } from "./GetByUidLocationsRequest.js";
 export type { GetLocationsRequest } from "./GetLocationsRequest.js";

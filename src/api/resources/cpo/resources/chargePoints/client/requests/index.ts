@@ -1,5 +1,5 @@
 export type { ChargePointCreate } from "./ChargePointCreate.js";
-export type { ChargePointUpdate } from "./ChargePointUpdate.js";
+export type { ChargerSaveRequest } from "./ChargerSaveRequest.js";
 export type { DeleteChargePointsRequest } from "./DeleteChargePointsRequest.js";
 export type { GetChargePointsRequest } from "./GetChargePointsRequest.js";
 export type { ListCdrsChargePointsRequest } from "./ListCdrsChargePointsRequest.js";
@@ -7,3 +7,4 @@ export type { ListChargePointsRequest } from "./ListChargePointsRequest.js";
 export type { ListConnectorsChargePointsRequest } from "./ListConnectorsChargePointsRequest.js";
 export type { ListEvsesChargePointsRequest } from "./ListEvsesChargePointsRequest.js";
 export type { ListSessionsChargePointsRequest } from "./ListSessionsChargePointsRequest.js";
+export type { UpdateChargePointsRequest } from "./UpdateChargePointsRequest.js";

@@ -7,7 +7,7 @@ import type * as Evcloud from "../index.js";
  */
 export interface EmspLocationOut {
     uid: string;
-    source: string;
+    source: EmspLocationOut.Source;
     workspace_id: string;
     country_code: string;
     party_id: string;
@@ -30,4 +30,8 @@ export interface EmspLocationOut {
     ocpi?: (Evcloud.LocationBase | null) | undefined;
     /** Accepts any additional properties */
     [key: string]: any;
+}
+
+export namespace EmspLocationOut {
+    export type Source = ("OWN_OCPP" | "PARTNER_OCPI") | unknown;
 }

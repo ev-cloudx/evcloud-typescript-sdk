@@ -5,6 +5,7 @@ import { EmspClient } from "./api/resources/emsp/client/Client.js";
 import { EnergyClient } from "./api/resources/energy/client/Client.js";
 import { HealthClient } from "./api/resources/health/client/Client.js";
 import { OcpiClient } from "./api/resources/ocpi/client/Client.js";
+import { OcppClient } from "./api/resources/ocpp/client/Client.js";
 import { ProxyClient } from "./api/resources/proxy/client/Client.js";
 import { WebhooksClient } from "./api/resources/webhooks/client/Client.js";
 import type { BaseClientOptions, BaseRequestOptions } from "./BaseClient.js";
@@ -24,6 +25,7 @@ export class EvcloudClient {
     protected _emsp: EmspClient | undefined;
     protected _energy: EnergyClient | undefined;
     protected _ocpi: OcpiClient | undefined;
+    protected _ocpp: OcppClient | undefined;
     protected _proxy: ProxyClient | undefined;
     protected _webhooks: WebhooksClient | undefined;
 
@@ -49,6 +51,10 @@ export class EvcloudClient {
 
     public get ocpi(): OcpiClient {
         return (this._ocpi ??= new OcpiClient(this._options));
+    }
+
+    public get ocpp(): OcppClient {
+        return (this._ocpp ??= new OcppClient(this._options));
     }
 
     public get proxy(): ProxyClient {

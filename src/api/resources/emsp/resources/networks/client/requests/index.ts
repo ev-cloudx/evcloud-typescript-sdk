@@ -7,4 +7,3 @@ export type { ListRulesNetworksRequest } from "./ListRulesNetworksRequest.js";
 export type { NetworkCreate } from "./NetworkCreate.js";
 export { NetworkRuleCreate } from "./NetworkRuleCreate.js";
 export type { NetworkUpdate } from "./NetworkUpdate.js";
-export type { PublishStateRequest } from "./PublishStateRequest.js";

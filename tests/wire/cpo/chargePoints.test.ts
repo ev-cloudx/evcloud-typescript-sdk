@@ -671,8 +671,10 @@ describe("ChargePointsClient", () => {
 
         const response = await client.cpo.chargePoints.update({
             charge_point_id: "CP-AMS-001",
-            location_id: 13,
-            expected_revision: 1,
+            body: {
+                location_id: 13,
+                expected_revision: 1,
+            },
         });
         expect(response).toEqual(rawResponseBody);
     });
@@ -695,6 +697,7 @@ describe("ChargePointsClient", () => {
         await expect(async () => {
             return await client.cpo.chargePoints.update({
                 charge_point_id: "charge_point_id",
+                body: {},
             });
         }).rejects.toThrow(Evcloud.UnauthorizedError);
     });
@@ -717,6 +720,7 @@ describe("ChargePointsClient", () => {
         await expect(async () => {
             return await client.cpo.chargePoints.update({
                 charge_point_id: "charge_point_id",
+                body: {},
             });
         }).rejects.toThrow(Evcloud.NotFoundError);
     });
@@ -739,6 +743,7 @@ describe("ChargePointsClient", () => {
         await expect(async () => {
             return await client.cpo.chargePoints.update({
                 charge_point_id: "charge_point_id",
+                body: {},
             });
         }).rejects.toThrow(Evcloud.ConflictError);
     });
@@ -761,6 +766,7 @@ describe("ChargePointsClient", () => {
         await expect(async () => {
             return await client.cpo.chargePoints.update({
                 charge_point_id: "charge_point_id",
+                body: {},
             });
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
     });
@@ -783,6 +789,7 @@ describe("ChargePointsClient", () => {
         await expect(async () => {
             return await client.cpo.chargePoints.update({
                 charge_point_id: "charge_point_id",
+                body: {},
             });
         }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
@@ -805,6 +812,7 @@ describe("ChargePointsClient", () => {
         await expect(async () => {
             return await client.cpo.chargePoints.update({
                 charge_point_id: "charge_point_id",
+                body: {},
             });
         }).rejects.toThrow(Evcloud.BadGatewayError);
     });
@@ -826,6 +834,287 @@ describe("ChargePointsClient", () => {
 
         await expect(async () => {
             return await client.cpo.chargePoints.update({
+                charge_point_id: "charge_point_id",
+                body: {},
+            });
+        }).rejects.toThrow(Evcloud.GatewayTimeoutError);
+    });
+
+    test("save (1)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {
+            charge_point: { is_roaming: true },
+            connectors: [{ id: 34, patch: { max_amperage: 32 } }],
+        };
+        const rawResponseBody = {
+            charge_point: {
+                id: "5f0c1a2b-3c4d-4e5f-8a9b-0c1d2e3f4a5b",
+                workspace_id: "550e8400-e29b-41d4-a716-446655440000",
+                charge_point_id: "CP-AMS-001",
+                ocpp_version: "ocpp2.0.1",
+                is_online: true,
+                is_roaming: true,
+                charge_point_vendor: "ABB",
+                charge_point_model: "Terra AC W22",
+                firmware_version: "1.8.2",
+                last_heartbeat: "2026-09-30T10:00:00Z",
+                max_power_kw: 22,
+                connector_count: 2,
+                use_status_notification_0: false,
+                location_id: 12,
+                revision: 1,
+            },
+            evses: [
+                {
+                    id: 101,
+                    workspace_id: "550e8400-e29b-41d4-a716-446655440000",
+                    charge_point_id: "CP-AMS-001",
+                    evse_type_id: 1,
+                    evse_id: "NL*OCP*E1001*1",
+                    evse_uid: "NL*OCP*E1001*1",
+                    removed: false,
+                    location_id: "LOC-AMS-01",
+                    location_db_id: 12,
+                    status: "AVAILABLE",
+                    capabilities: ["RFID_READER", "REMOTE_START_STOP_CAPABLE"],
+                    role: "CPO",
+                    origin: "LOCAL",
+                    country_code: "NL",
+                    party_id: "OCP",
+                    ocpi_version: "2.2.1",
+                    ocpp_version: "ocpp2.0.1",
+                    last_updated: "2026-09-30T10:00:00Z",
+                    revision: 1,
+                    created_at: "2026-09-01T09:00:00Z",
+                    updated_at: "2026-09-30T10:00:00Z",
+                },
+            ],
+            connectors: [
+                {
+                    id: 201,
+                    workspace_id: "550e8400-e29b-41d4-a716-446655440000",
+                    charge_point_id: "CP-AMS-001",
+                    evse_id: 101,
+                    evse_uid: "NL*OCP*E1001*1",
+                    connector_id: 1,
+                    evse_type_connector_id: 1,
+                    ocpi_connector_id: "1",
+                    status: "Available",
+                    error_code: "NoError",
+                    ocpi_status: "AVAILABLE",
+                    standard: "IEC_62196_T2",
+                    format: "SOCKET",
+                    power_type: "AC_3_PHASE",
+                    max_voltage: 400,
+                    max_amperage: 32,
+                    max_electric_power: 22000,
+                    auto_created: false,
+                    ocpp_version: "ocpp2.0.1",
+                    timestamp: "2026-09-30T10:00:00Z",
+                    last_updated: "2026-09-30T10:00:00Z",
+                    revision: 1,
+                },
+            ],
+        };
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/CP-AMS-001/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(200)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        const response = await client.cpo.chargePoints.save({
+            charge_point_id: "CP-AMS-001",
+            charge_point: {
+                is_roaming: true,
+            },
+            connectors: [
+                {
+                    id: 34,
+                    patch: {
+                        max_amperage: 32,
+                    },
+                },
+            ],
+        });
+        expect(response).toEqual(rawResponseBody);
+    });
+
+    test("save (2)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {};
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/charge_point_id/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(401)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.cpo.chargePoints.save({
+                charge_point_id: "charge_point_id",
+            });
+        }).rejects.toThrow(Evcloud.UnauthorizedError);
+    });
+
+    test("save (3)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {};
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/charge_point_id/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(403)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.cpo.chargePoints.save({
+                charge_point_id: "charge_point_id",
+            });
+        }).rejects.toThrow(Evcloud.ForbiddenError);
+    });
+
+    test("save (4)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {};
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/charge_point_id/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(404)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.cpo.chargePoints.save({
+                charge_point_id: "charge_point_id",
+            });
+        }).rejects.toThrow(Evcloud.NotFoundError);
+    });
+
+    test("save (5)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {};
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/charge_point_id/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(409)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.cpo.chargePoints.save({
+                charge_point_id: "charge_point_id",
+            });
+        }).rejects.toThrow(Evcloud.ConflictError);
+    });
+
+    test("save (6)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {};
+        const rawResponseBody = {};
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/charge_point_id/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(422)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.cpo.chargePoints.save({
+                charge_point_id: "charge_point_id",
+            });
+        }).rejects.toThrow(Evcloud.UnprocessableEntityError);
+    });
+
+    test("save (7)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {};
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/charge_point_id/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(429)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.cpo.chargePoints.save({
+                charge_point_id: "charge_point_id",
+            });
+        }).rejects.toThrow(Evcloud.TooManyRequestsError);
+    });
+
+    test("save (8)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {};
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/charge_point_id/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(502)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.cpo.chargePoints.save({
+                charge_point_id: "charge_point_id",
+            });
+        }).rejects.toThrow(Evcloud.BadGatewayError);
+    });
+
+    test("save (9)", async () => {
+        const server = mockServerPool.createServer();
+        const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
+        const rawRequestBody = {};
+        const rawResponseBody = { detail: "detail" };
+
+        server
+            .mockEndpoint()
+            .post("/cpo/charge-points/charge_point_id/save")
+            .jsonBody(rawRequestBody)
+            .respondWith()
+            .statusCode(504)
+            .jsonBody(rawResponseBody)
+            .build();
+
+        await expect(async () => {
+            return await client.cpo.chargePoints.save({
                 charge_point_id: "charge_point_id",
             });
         }).rejects.toThrow(Evcloud.GatewayTimeoutError);

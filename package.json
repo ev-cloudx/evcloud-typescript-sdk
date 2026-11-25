@@ -1,6 +1,6 @@
 {
     "name": "evcloud",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "private": false,
     "repository": {
         "type": "git",
@@ -131,6 +131,17 @@
                 "default": "./dist/cjs/api/resources/cpo/resources/tariffs/exports.js"
             },
             "default": "./dist/cjs/api/resources/cpo/resources/tariffs/exports.js"
+        },
+        "./cpo/tokens": {
+            "import": {
+                "types": "./dist/esm/api/resources/cpo/resources/tokens/exports.d.mts",
+                "default": "./dist/esm/api/resources/cpo/resources/tokens/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/cpo/resources/tokens/exports.d.ts",
+                "default": "./dist/cjs/api/resources/cpo/resources/tokens/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/cpo/resources/tokens/exports.js"
         },
         "./emsp": {
             "import": {
@@ -341,6 +352,28 @@
             },
             "default": "./dist/cjs/api/resources/ocpi/resources/sync/exports.js"
         },
+        "./ocpp": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpp/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpp/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpp/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpp/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpp/exports.js"
+        },
+        "./ocpp/commands": {
+            "import": {
+                "types": "./dist/esm/api/resources/ocpp/resources/commands/exports.d.mts",
+                "default": "./dist/esm/api/resources/ocpp/resources/commands/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/ocpp/resources/commands/exports.d.ts",
+                "default": "./dist/cjs/api/resources/ocpp/resources/commands/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/ocpp/resources/commands/exports.js"
+        },
         "./proxy": {
             "import": {
                 "types": "./dist/esm/api/resources/proxy/exports.d.mts",
@@ -395,6 +428,17 @@
                 "default": "./dist/cjs/api/resources/proxy/resources/chargerPoints/exports.js"
             },
             "default": "./dist/cjs/api/resources/proxy/resources/chargerPoints/exports.js"
+        },
+        "./proxy/chargerRegistry": {
+            "import": {
+                "types": "./dist/esm/api/resources/proxy/resources/chargerRegistry/exports.d.mts",
+                "default": "./dist/esm/api/resources/proxy/resources/chargerRegistry/exports.mjs"
+            },
+            "require": {
+                "types": "./dist/cjs/api/resources/proxy/resources/chargerRegistry/exports.d.ts",
+                "default": "./dist/cjs/api/resources/proxy/resources/chargerRegistry/exports.js"
+            },
+            "default": "./dist/cjs/api/resources/proxy/resources/chargerRegistry/exports.js"
         },
         "./proxy/chargeSessions": {
             "import": {

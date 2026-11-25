@@ -10,6 +10,7 @@ import { HealthClient } from "../resources/health/client/Client.js";
 import { LocationsClient } from "../resources/locations/client/Client.js";
 import { SessionsClient } from "../resources/sessions/client/Client.js";
 import { TariffsClient } from "../resources/tariffs/client/Client.js";
+import { TokensClient } from "../resources/tokens/client/Client.js";
 
 export declare namespace CpoClient {
     export type Options = BaseClientOptions;
@@ -25,6 +26,7 @@ export class CpoClient {
     protected _locations: LocationsClient | undefined;
     protected _sessions: SessionsClient | undefined;
     protected _tariffs: TariffsClient | undefined;
+    protected _tokens: TokensClient | undefined;
 
     constructor(options: CpoClient.Options = {}) {
         this._options = normalizeClientOptionsWithAuth(options);
@@ -60,5 +62,9 @@ export class CpoClient {
 
     public get tariffs(): TariffsClient {
         return (this._tariffs ??= new TariffsClient(this._options));
+    }
+
+    public get tokens(): TokensClient {
+        return (this._tokens ??= new TokensClient(this._options));
     }
 }

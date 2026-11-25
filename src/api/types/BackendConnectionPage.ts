@@ -3,10 +3,10 @@
 import type * as Evcloud from "../index.js";
 
 /**
- * One page of the workspace's frames, newest first.
+ * One page of the workspace's backend connections, newest first.
  */
-export interface FrameLogPage {
-    items: Evcloud.FrameLogOut[];
+export interface BackendConnectionPage {
+    items: Evcloud.BackendConnectionOut[];
     offset: number;
     limit: number;
     next_offset?: (number | null) | undefined;

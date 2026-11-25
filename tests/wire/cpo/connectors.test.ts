@@ -681,7 +681,9 @@ describe("ConnectorsClient", () => {
 
         const response = await client.cpo.connectors.update({
             connector_db_id: 201,
-            max_electric_power: 11000,
+            body: {
+                max_electric_power: 11000,
+            },
         });
         expect(response).toEqual(rawResponseBody);
     });
@@ -704,6 +706,7 @@ describe("ConnectorsClient", () => {
         await expect(async () => {
             return await client.cpo.connectors.update({
                 connector_db_id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.UnauthorizedError);
     });
@@ -726,6 +729,7 @@ describe("ConnectorsClient", () => {
         await expect(async () => {
             return await client.cpo.connectors.update({
                 connector_db_id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.NotFoundError);
     });
@@ -748,6 +752,7 @@ describe("ConnectorsClient", () => {
         await expect(async () => {
             return await client.cpo.connectors.update({
                 connector_db_id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.ConflictError);
     });
@@ -770,6 +775,7 @@ describe("ConnectorsClient", () => {
         await expect(async () => {
             return await client.cpo.connectors.update({
                 connector_db_id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
     });
@@ -792,6 +798,7 @@ describe("ConnectorsClient", () => {
         await expect(async () => {
             return await client.cpo.connectors.update({
                 connector_db_id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
@@ -814,6 +821,7 @@ describe("ConnectorsClient", () => {
         await expect(async () => {
             return await client.cpo.connectors.update({
                 connector_db_id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.BadGatewayError);
     });
@@ -836,6 +844,7 @@ describe("ConnectorsClient", () => {
         await expect(async () => {
             return await client.cpo.connectors.update({
                 connector_db_id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.GatewayTimeoutError);
     });

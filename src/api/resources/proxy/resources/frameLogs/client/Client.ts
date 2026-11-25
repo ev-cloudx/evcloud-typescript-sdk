@@ -42,11 +42,11 @@ export class FrameLogsClient {
     public async list(
         request: Evcloud.proxy.ListFrameLogsRequest = {},
         requestOptions?: FrameLogsClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.FrameLogOut, Evcloud.FrameLogPage>> {
+    ): Promise<core.Page<Evcloud.ChargePointLogOut, Evcloud.ChargePointLogPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Evcloud.proxy.ListFrameLogsRequest,
-            ): Promise<core.WithRawResponse<Evcloud.FrameLogPage>> => {
+            ): Promise<core.WithRawResponse<Evcloud.ChargePointLogPage>> => {
                 const {
                     charge_point_id: chargePointId,
                     action,
@@ -98,7 +98,7 @@ export class FrameLogsClient {
                     logging: this._options.logging,
                 });
                 if (_response.ok) {
-                    return { data: _response.body as Evcloud.FrameLogPage, rawResponse: _response.rawResponse };
+                    return { data: _response.body as Evcloud.ChargePointLogPage, rawResponse: _response.rawResponse };
                 }
                 if (_response.error.reason === "status-code") {
                     switch (_response.error.statusCode) {
@@ -139,7 +139,7 @@ export class FrameLogsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.FrameLogOut, Evcloud.FrameLogPage>({
+        return new core.Page<Evcloud.ChargePointLogOut, Evcloud.ChargePointLogPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -175,14 +175,14 @@ export class FrameLogsClient {
     public get(
         request: Evcloud.proxy.GetFrameLogsRequest,
         requestOptions?: FrameLogsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.FrameLogOut> {
+    ): core.HttpResponsePromise<Evcloud.ChargePointLogOut> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Evcloud.proxy.GetFrameLogsRequest,
         requestOptions?: FrameLogsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.FrameLogOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.ChargePointLogOut>> {
         const { frame_log_id: frameLogId } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -207,7 +207,7 @@ export class FrameLogsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.FrameLogOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.ChargePointLogOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

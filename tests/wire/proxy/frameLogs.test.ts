@@ -12,7 +12,7 @@ describe("FrameLogsClient", () => {
         const rawResponseBody = {
             items: [
                 {
-                    charge_session_id: "charge_session_id",
+                    charger_connection_id: "charger_connection_id",
                     session_epoch: 1,
                     direction: "up",
                     topic: "topic",
@@ -119,7 +119,7 @@ describe("FrameLogsClient", () => {
         const client = new EvcloudClient({ maxRetries: 0, token: "test", environment: server.baseUrl });
 
         const rawResponseBody = {
-            charge_session_id: "charge_session_id",
+            charger_connection_id: "charger_connection_id",
             session_epoch: 1,
             direction: "up",
             topic: "topic",

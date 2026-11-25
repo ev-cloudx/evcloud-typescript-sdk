@@ -3,10 +3,10 @@
 import type * as Evcloud from "../index.js";
 
 /**
- * One page of the workspace's charge sessions, newest first.
+ * One page of the workspace's charger connections, newest first.
  */
-export interface ChargeSessionPage {
-    items: Evcloud.ChargeSessionOut[];
+export interface ChargerConnectionPage {
+    items: Evcloud.ChargerConnectionOut[];
     offset: number;
     limit: number;
     next_offset?: (number | null) | undefined;

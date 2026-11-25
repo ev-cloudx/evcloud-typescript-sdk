@@ -42,11 +42,11 @@ export class ChargeSessionsClient {
     public async list(
         request: Evcloud.proxy.ListChargeSessionsRequest = {},
         requestOptions?: ChargeSessionsClient.RequestOptions,
-    ): Promise<core.Page<Evcloud.ChargeSessionOut, Evcloud.ChargeSessionPage>> {
+    ): Promise<core.Page<Evcloud.ChargerConnectionOut, Evcloud.ChargerConnectionPage>> {
         const list = core.HttpResponsePromise.interceptFunction(
             async (
                 request: Evcloud.proxy.ListChargeSessionsRequest,
-            ): Promise<core.WithRawResponse<Evcloud.ChargeSessionPage>> => {
+            ): Promise<core.WithRawResponse<Evcloud.ChargerConnectionPage>> => {
                 const {
                     charge_point_id: chargePointId,
                     open,
@@ -90,7 +90,10 @@ export class ChargeSessionsClient {
                     logging: this._options.logging,
                 });
                 if (_response.ok) {
-                    return { data: _response.body as Evcloud.ChargeSessionPage, rawResponse: _response.rawResponse };
+                    return {
+                        data: _response.body as Evcloud.ChargerConnectionPage,
+                        rawResponse: _response.rawResponse,
+                    };
                 }
                 if (_response.error.reason === "status-code") {
                     switch (_response.error.statusCode) {
@@ -131,7 +134,7 @@ export class ChargeSessionsClient {
             },
         );
         const dataWithRawResponse = await list(request).withRawResponse();
-        return new core.Page<Evcloud.ChargeSessionOut, Evcloud.ChargeSessionPage>({
+        return new core.Page<Evcloud.ChargerConnectionOut, Evcloud.ChargerConnectionPage>({
             response: dataWithRawResponse.data,
             rawResponse: dataWithRawResponse.rawResponse,
             hasNextPage: (response) =>
@@ -167,14 +170,14 @@ export class ChargeSessionsClient {
     public get(
         request: Evcloud.proxy.GetChargeSessionsRequest,
         requestOptions?: ChargeSessionsClient.RequestOptions,
-    ): core.HttpResponsePromise<Evcloud.ChargeSessionOut> {
+    ): core.HttpResponsePromise<Evcloud.ChargerConnectionOut> {
         return core.HttpResponsePromise.fromPromise(this.__get(request, requestOptions));
     }
 
     private async __get(
         request: Evcloud.proxy.GetChargeSessionsRequest,
         requestOptions?: ChargeSessionsClient.RequestOptions,
-    ): Promise<core.WithRawResponse<Evcloud.ChargeSessionOut>> {
+    ): Promise<core.WithRawResponse<Evcloud.ChargerConnectionOut>> {
         const { charge_session_id: chargeSessionId } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
@@ -199,7 +202,7 @@ export class ChargeSessionsClient {
             logging: this._options.logging,
         });
         if (_response.ok) {
-            return { data: _response.body as Evcloud.ChargeSessionOut, rawResponse: _response.rawResponse };
+            return { data: _response.body as Evcloud.ChargerConnectionOut, rawResponse: _response.rawResponse };
         }
 
         if (_response.error.reason === "status-code") {

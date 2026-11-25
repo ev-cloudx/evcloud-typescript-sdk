@@ -3,13 +3,13 @@
 /**
  * One gateway -> CSMS WebSocket for a charger; ``disconnected_at`` null while open.
  */
-export interface BackendSessionOut {
+export interface BackendConnectionOut {
     id: string;
     workspace_id: string;
     charge_point_id: string;
     backend_id?: (string | null) | undefined;
     backend_name: string;
-    charge_session_id?: (string | null) | undefined;
+    charger_connection_id?: (string | null) | undefined;
     worker_id?: (string | null) | undefined;
     url?: (string | null) | undefined;
     ocpp_version?: (string | null) | undefined;

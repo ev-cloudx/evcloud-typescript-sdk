@@ -600,8 +600,10 @@ describe("EvsesClient", () => {
 
         const response = await client.cpo.evses.update({
             id: 101,
-            floor_level: "-1",
-            expected_revision: 1,
+            body: {
+                floor_level: "-1",
+                expected_revision: 1,
+            },
         });
         expect(response).toEqual(rawResponseBody);
     });
@@ -624,6 +626,7 @@ describe("EvsesClient", () => {
         await expect(async () => {
             return await client.cpo.evses.update({
                 id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.UnauthorizedError);
     });
@@ -646,6 +649,7 @@ describe("EvsesClient", () => {
         await expect(async () => {
             return await client.cpo.evses.update({
                 id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.NotFoundError);
     });
@@ -668,6 +672,7 @@ describe("EvsesClient", () => {
         await expect(async () => {
             return await client.cpo.evses.update({
                 id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.ConflictError);
     });
@@ -690,6 +695,7 @@ describe("EvsesClient", () => {
         await expect(async () => {
             return await client.cpo.evses.update({
                 id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.UnprocessableEntityError);
     });
@@ -712,6 +718,7 @@ describe("EvsesClient", () => {
         await expect(async () => {
             return await client.cpo.evses.update({
                 id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.TooManyRequestsError);
     });
@@ -734,6 +741,7 @@ describe("EvsesClient", () => {
         await expect(async () => {
             return await client.cpo.evses.update({
                 id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.BadGatewayError);
     });
@@ -756,6 +764,7 @@ describe("EvsesClient", () => {
         await expect(async () => {
             return await client.cpo.evses.update({
                 id: 1,
+                body: {},
             });
         }).rejects.toThrow(Evcloud.GatewayTimeoutError);
     });

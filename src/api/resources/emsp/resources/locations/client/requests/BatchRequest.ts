@@ -18,5 +18,18 @@ import type * as Evcloud from "../../../../../../index.js";
  */
 export interface BatchRequest {
     keys?: Evcloud.LocationKeyInput[] | null;
+    source?: BatchRequest.Source.Item[] | null;
     uids?: string[] | null;
+}
+
+export namespace BatchRequest {
+    export type Source = Source.Item[];
+
+    export namespace Source {
+        export const Item = {
+            Ocpp: "ocpp",
+            Ocpi: "ocpi",
+        } as const;
+        export type Item = (typeof Item)[keyof typeof Item];
+    }
 }

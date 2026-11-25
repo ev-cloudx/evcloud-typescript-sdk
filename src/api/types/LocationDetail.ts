@@ -7,7 +7,7 @@ import type * as Evcloud from "../index.js";
  */
 export interface LocationDetail {
     uid: string;
-    source: string;
+    source: LocationDetail.Source;
     workspace_id: string;
     country_code: string;
     party_id: string;
@@ -32,4 +32,8 @@ export interface LocationDetail {
     tariff_summary?: (Evcloud.TariffSummary[] | null) | undefined;
     /** Accepts any additional properties */
     [key: string]: any;
+}
+
+export namespace LocationDetail {
+    export type Source = ("OWN_OCPP" | "PARTNER_OCPI") | unknown;
 }

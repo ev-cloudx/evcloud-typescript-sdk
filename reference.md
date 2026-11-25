@@ -525,8 +525,10 @@ Changes only the fields sent; send null to clear a field. Send ``expected_revisi
 ```typescript
 await client.cpo.chargePoints.update({
     charge_point_id: "CP-AMS-001",
-    location_id: 13,
-    expected_revision: 1
+    body: {
+        location_id: 13,
+        expected_revision: 1
+    }
 });
 
 ```
@@ -543,7 +545,81 @@ await client.cpo.chargePoints.update({
 <dl>
 <dd>
 
-**request:** `Evcloud.cpo.ChargePointUpdate` 
+**request:** `Evcloud.cpo.UpdateChargePointsRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ChargePointsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cpo.chargePoints.<a href="/src/api/resources/cpo/resources/chargePoints/client/Client.ts">save</a>({ ...params }) -> Evcloud.ChargerSaveOut</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Applies the charger, its EVSEs and its connectors in one transaction, so a charger is published complete or not at all. Any failure leaves everything as it was.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.chargePoints.save({
+    charge_point_id: "CP-AMS-001",
+    charge_point: {
+        is_roaming: true
+    },
+    connectors: [{
+            id: 34,
+            patch: {
+                max_amperage: 32
+            }
+        }]
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.ChargerSaveRequest` 
     
 </dd>
 </dl>
@@ -1220,7 +1296,9 @@ Changes only the fields sent; send null to clear a field. Connectors of partner 
 ```typescript
 await client.cpo.connectors.update({
     connector_db_id: 201,
-    max_electric_power: 11000
+    body: {
+        max_electric_power: 11000
+    }
 });
 
 ```
@@ -1237,7 +1315,7 @@ await client.cpo.connectors.update({
 <dl>
 <dd>
 
-**request:** `Evcloud.cpo.ConnectorUpdate` 
+**request:** `Evcloud.cpo.UpdateConnectorsRequest` 
     
 </dd>
 </dl>
@@ -1570,8 +1648,10 @@ Changes only the fields sent; send null to clear a field. Guard it with ``expect
 ```typescript
 await client.cpo.evses.update({
     id: 101,
-    floor_level: "-1",
-    expected_revision: 1
+    body: {
+        floor_level: "-1",
+        expected_revision: 1
+    }
 });
 
 ```
@@ -1588,7 +1668,7 @@ await client.cpo.evses.update({
 <dl>
 <dd>
 
-**request:** `Evcloud.cpo.EvseUpdate` 
+**request:** `Evcloud.cpo.UpdateEvsesRequest` 
     
 </dd>
 </dl>
@@ -2820,6 +2900,465 @@ await client.cpo.tariffs.unassign({
 </dl>
 </details>
 
+## Cpo Tokens
+<details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">create</a>({ ...params }) -> Evcloud.GatewayToken</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Adds a card or idTag the chargers of this workspace accept.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.tokens.create({
+    id_token: "ABC123"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.TokenCreate` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `TokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">delete</a>({ ...params }) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Soft-deletes the token, or removes it with ``hard=true``. Chargers that accepted the card are told to clear their cache.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.tokens.delete({
+    token_id: 1
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.DeleteTokensRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `TokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">update</a>({ ...params }) -> Evcloud.GatewayToken</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Changes only the fields sent.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.tokens.update({
+    token_id: 1,
+    description: "Depot"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.TokenUpdate` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `TokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">activate</a>({ ...params }) -> Evcloud.GatewayToken</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Makes an unused card usable, optionally until ``valid_until``.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.tokens.activate({
+    token_id: 1
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.TokenActivate` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `TokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">block</a>({ ...params }) -> Evcloud.GatewayToken</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Chargers refuse the card from now on; ``reason`` is recorded.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.tokens.block({
+    token_id: 1,
+    reason: "lost"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.TokenBlock` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `TokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">unblock</a>({ ...params }) -> Evcloud.GatewayToken</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Chargers accept the card again.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.tokens.unblock({
+    token_id: 1
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.TokenUnblock` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `TokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.cpo.tokens.<a href="/src/api/resources/cpo/resources/tokens/client/Client.ts">reprovision</a>({ ...params }) -> Evcloud.GatewayToken</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Puts a new ``id_token`` on the same token, for a lost or reissued card.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.cpo.tokens.reprovision({
+    token_id: 1,
+    id_token: "DEF456"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.cpo.TokenReprovision` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `TokensClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Emsp Health
 <details><summary><code>client.emsp.health.<a href="/src/api/resources/emsp/resources/health/client/Client.ts">get</a>() -> Evcloud.HealthOk</code></summary>
 <dl>
@@ -3981,72 +4520,6 @@ const response = page.response;
 <dd>
 
 **request:** `Evcloud.emsp.ListLocationsNetworksRequest` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestOptions:** `NetworksClient.RequestOptions` 
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.emsp.networks.<a href="/src/api/resources/emsp/resources/networks/client/Client.ts">setPublishState</a>({ ...params }) -> Evcloud.NetworkOut</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Published base networks can be ranked by other workspaces. When withdrawing, ``unpublish_drain_until`` keeps their access until then.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```typescript
-await client.emsp.networks.setPublishState({
-    network_id: 20,
-    published: true
-});
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**request:** `Evcloud.emsp.PublishStateRequest` 
     
 </dd>
 </dl>
@@ -8371,6 +8844,144 @@ await client.ocpi.sync.pullHubClientInfoAsCpo({
 </dl>
 </details>
 
+## Ocpp Commands
+<details><summary><code>client.ocpp.commands.<a href="/src/api/resources/ocpp/resources/commands/client/Client.ts">send</a>({ ...params }) -> Evcloud.CommandDispatchOut</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Admin only. Sends one OCPP CALL (``command`` with payload ``msg``) to ``charger_id``. The payload is validated against the OCPP schema of ``ocpp_version``; the charger must be registered, enabled and connected (409 otherwise). ``results[0].status`` is ``sent``, or ``failed`` when it could not be queued. Follow the outcome with ``ocpp.commands.get`` using ``results[0].ocpp_message_id``. Reuse ``idempotency_key`` to retry safely.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocpp.commands.send({
+    ocpp_version: "v16",
+    authorization_reference: "AUTHREF-1",
+    command: "RemoteStartTransaction",
+    charger_id: "CP-AMS-001",
+    msg: {
+        "idTag": "044943121F1A80",
+        "connectorId": 1
+    }
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.ocpp.OcppCommand` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CommandsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.ocpp.commands.<a href="/src/api/resources/ocpp/resources/commands/client/Client.ts">get</a>({ ...params }) -> Evcloud.CommandStatusOut</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Lifecycle of a sent command: ``queued``, ``sent``, then ``completed`` (``response_payload`` holds the charger's answer), ``failed`` (``error_code`` / ``error_description``) or ``timeout``. Pass ``charge_point_id`` when two chargers may have used the same message id.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.ocpp.commands.get({
+    tracking_id: "a1b2c3d4e5f6"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.ocpp.GetCommandsRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `CommandsClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Proxy Backends
 <details><summary><code>client.proxy.backends.<a href="/src/api/resources/proxy/resources/backends/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Evcloud.BackendOut, Evcloud.BackendPage&gt;</code></summary>
 <dl>
@@ -9666,8 +10277,403 @@ await client.proxy.chargerPoints.update({
 </dl>
 </details>
 
+## Proxy ChargerRegistry
+<details><summary><code>client.proxy.chargerRegistry.<a href="/src/api/resources/proxy/resources/chargerRegistry/client/Client.ts">register</a>({ ...params }) -> Evcloud.ChargerPointOut</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Adds the charger to the registry so the proxy accepts its connection. ``charge_point_id`` in the body must equal the one in the path. Send ``Idempotency-Key`` to retry safely.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.proxy.chargerRegistry.register({
+    charge_point_idPathParam: "CP-AMS-001",
+    charge_point_id: "CP-AMS-001",
+    security_profile: 2
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.proxy.ChargerRegistryCreate` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ChargerRegistryClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.proxy.chargerRegistry.<a href="/src/api/resources/proxy/resources/chargerRegistry/client/Client.ts">delete</a>({ ...params }) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The proxy refuses the charger's connection from now on.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.proxy.chargerRegistry.delete({
+    charge_point_id: "CP-AMS-001"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.proxy.DeleteChargerRegistryRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ChargerRegistryClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.proxy.chargerRegistry.<a href="/src/api/resources/proxy/resources/chargerRegistry/client/Client.ts">update</a>({ ...params }) -> Evcloud.ChargerPointOut</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Changes only the fields sent. Send ``expected_revision`` to refuse the write (409) if the entry changed since you read it.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.proxy.chargerRegistry.update({
+    charge_point_id: "CP-AMS-001",
+    enabled: false
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.proxy.ChargerRegistryUpdate` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ChargerRegistryClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.proxy.chargerRegistry.<a href="/src/api/resources/proxy/resources/chargerRegistry/client/Client.ts">armBootPendingOnce</a>({ ...params }) -> void</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+The charger's next BootNotification is answered ``Pending`` once, so it reconfigures before it is accepted.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.proxy.chargerRegistry.armBootPendingOnce({
+    charge_point_id: "CP-AMS-001"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.proxy.ArmBootPendingOnceChargerRegistryRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ChargerRegistryClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.proxy.chargerRegistry.<a href="/src/api/resources/proxy/resources/chargerRegistry/client/Client.ts">pinClientCertificate</a>({ ...params }) -> Evcloud.ChargerPointOut</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Sets the charger's security profile 3 client certificate (PEM, leaf first).
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.proxy.chargerRegistry.pinClientCertificate({
+    charge_point_id: "CP-AMS-001",
+    certificate_pem: "-----BEGIN CERTIFICATE-----\nMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIBMIIB\n-----END CERTIFICATE-----\n"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.proxy.ClientCertificateIn` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ChargerRegistryClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.proxy.chargerRegistry.<a href="/src/api/resources/proxy/resources/chargerRegistry/client/Client.ts">revokeClientCertificate</a>({ ...params }) -> Evcloud.ChargerPointOut</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Removes the pinned client certificate; the charger can no longer connect with it.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```typescript
+await client.proxy.chargerRegistry.revokeClientCertificate({
+    charge_point_id: "CP-AMS-001"
+});
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**request:** `Evcloud.proxy.RevokeClientCertificateChargerRegistryRequest` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestOptions:** `ChargerRegistryClient.RequestOptions` 
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Proxy ChargeSessions
-<details><summary><code>client.proxy.chargeSessions.<a href="/src/api/resources/proxy/resources/chargeSessions/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Evcloud.ChargeSessionOut, Evcloud.ChargeSessionPage&gt;</code></summary>
+<details><summary><code>client.proxy.chargeSessions.<a href="/src/api/resources/proxy/resources/chargeSessions/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Evcloud.ChargerConnectionOut, Evcloud.ChargerConnectionPage&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9742,7 +10748,7 @@ const response = page.response;
 </dl>
 </details>
 
-<details><summary><code>client.proxy.chargeSessions.<a href="/src/api/resources/proxy/resources/chargeSessions/client/Client.ts">get</a>({ ...params }) -> Evcloud.ChargeSessionOut</code></summary>
+<details><summary><code>client.proxy.chargeSessions.<a href="/src/api/resources/proxy/resources/chargeSessions/client/Client.ts">get</a>({ ...params }) -> Evcloud.ChargerConnectionOut</code></summary>
 <dl>
 <dd>
 
@@ -9808,7 +10814,7 @@ await client.proxy.chargeSessions.get({
 </details>
 
 ## Proxy BackendSessions
-<details><summary><code>client.proxy.backendSessions.<a href="/src/api/resources/proxy/resources/backendSessions/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Evcloud.BackendSessionOut, Evcloud.BackendSessionPage&gt;</code></summary>
+<details><summary><code>client.proxy.backendSessions.<a href="/src/api/resources/proxy/resources/backendSessions/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Evcloud.BackendConnectionOut, Evcloud.BackendConnectionPage&gt;</code></summary>
 <dl>
 <dd>
 
@@ -9883,7 +10889,7 @@ const response = page.response;
 </dl>
 </details>
 
-<details><summary><code>client.proxy.backendSessions.<a href="/src/api/resources/proxy/resources/backendSessions/client/Client.ts">get</a>({ ...params }) -> Evcloud.BackendSessionOut</code></summary>
+<details><summary><code>client.proxy.backendSessions.<a href="/src/api/resources/proxy/resources/backendSessions/client/Client.ts">get</a>({ ...params }) -> Evcloud.BackendConnectionOut</code></summary>
 <dl>
 <dd>
 
@@ -9949,7 +10955,7 @@ await client.proxy.backendSessions.get({
 </details>
 
 ## Proxy FrameLogs
-<details><summary><code>client.proxy.frameLogs.<a href="/src/api/resources/proxy/resources/frameLogs/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Evcloud.FrameLogOut, Evcloud.FrameLogPage&gt;</code></summary>
+<details><summary><code>client.proxy.frameLogs.<a href="/src/api/resources/proxy/resources/frameLogs/client/Client.ts">list</a>({ ...params }) -> core.Page&lt;Evcloud.ChargePointLogOut, Evcloud.ChargePointLogPage&gt;</code></summary>
 <dl>
 <dd>
 
@@ -10024,7 +11030,7 @@ const response = page.response;
 </dl>
 </details>
 
-<details><summary><code>client.proxy.frameLogs.<a href="/src/api/resources/proxy/resources/frameLogs/client/Client.ts">get</a>({ ...params }) -> Evcloud.FrameLogOut</code></summary>
+<details><summary><code>client.proxy.frameLogs.<a href="/src/api/resources/proxy/resources/frameLogs/client/Client.ts">get</a>({ ...params }) -> Evcloud.ChargePointLogOut</code></summary>
 <dl>
 <dd>
 

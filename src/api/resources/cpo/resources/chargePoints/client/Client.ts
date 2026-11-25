@@ -2,7 +2,7 @@
 
 import type { BaseClientOptions, BaseRequestOptions } from "../../../../../../BaseClient.js";
 import { type NormalizedClientOptionsWithAuth, normalizeClientOptionsWithAuth } from "../../../../../../BaseClient.js";
-import { mergeHeaders } from "../../../../../../core/headers.js";
+import { mergeHeaders, mergeOnlyDefinedHeaders } from "../../../../../../core/headers.js";
 import * as core from "../../../../../../core/index.js";
 import { mergeAdditionalBodyParameters } from "../../../../../../core/requestBody.js";
 import * as environments from "../../../../../../environments.js";
@@ -487,7 +487,7 @@ export class ChargePointsClient {
     /**
      * Changes only the fields sent; send null to clear a field. Send ``expected_revision`` to have the update refused with 409 if the charger changed since you read it.
      *
-     * @param {Evcloud.cpo.ChargePointUpdate} request
+     * @param {Evcloud.cpo.UpdateChargePointsRequest} request
      * @param {ChargePointsClient.RequestOptions} requestOptions - Request-specific configuration.
      *
      * @throws {@link Evcloud.UnauthorizedError}
@@ -503,22 +503,24 @@ export class ChargePointsClient {
      * @example
      *     await client.cpo.chargePoints.update({
      *         charge_point_id: "CP-AMS-001",
-     *         location_id: 13,
-     *         expected_revision: 1
+     *         body: {
+     *             location_id: 13,
+     *             expected_revision: 1
+     *         }
      *     })
      */
     public update(
-        request: Evcloud.cpo.ChargePointUpdate,
+        request: Evcloud.cpo.UpdateChargePointsRequest,
         requestOptions?: ChargePointsClient.RequestOptions,
     ): core.HttpResponsePromise<Evcloud.ChargePointOut> {
         return core.HttpResponsePromise.fromPromise(this.__update(request, requestOptions));
     }
 
     private async __update(
-        request: Evcloud.cpo.ChargePointUpdate,
+        request: Evcloud.cpo.UpdateChargePointsRequest,
         requestOptions?: ChargePointsClient.RequestOptions,
     ): Promise<core.WithRawResponse<Evcloud.ChargePointOut>> {
-        const { charge_point_id: chargePointId, ..._body } = request;
+        const { charge_point_id: chargePointId, body: _body } = request;
         const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
         const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
             _authRequest.headers,
@@ -599,6 +601,138 @@ export class ChargePointsClient {
             _response.rawResponse,
             "PATCH",
             "/cpo/charge-points/{charge_point_id}",
+        );
+    }
+
+    /**
+     * Admin only. Applies the charger, its EVSEs and its connectors in one transaction, so a charger is published complete or not at all. Any failure leaves everything as it was.
+     *
+     * @param {Evcloud.cpo.ChargerSaveRequest} request
+     * @param {ChargePointsClient.RequestOptions} requestOptions - Request-specific configuration.
+     *
+     * @throws {@link Evcloud.UnauthorizedError}
+     * @throws {@link Evcloud.ForbiddenError}
+     * @throws {@link Evcloud.NotFoundError}
+     * @throws {@link Evcloud.ConflictError}
+     * @throws {@link Evcloud.UnprocessableEntityError}
+     * @throws {@link Evcloud.TooManyRequestsError}
+     * @throws {@link Evcloud.BadGatewayError}
+     * @throws {@link Evcloud.GatewayTimeoutError}
+     * @throws {@link errors.EvcloudError}
+     * @throws {@link errors.EvcloudTimeoutError}
+     *
+     * @example
+     *     await client.cpo.chargePoints.save({
+     *         charge_point_id: "CP-AMS-001",
+     *         charge_point: {
+     *             is_roaming: true
+     *         },
+     *         connectors: [{
+     *                 id: 34,
+     *                 patch: {
+     *                     max_amperage: 32
+     *                 }
+     *             }]
+     *     })
+     */
+    public save(
+        request: Evcloud.cpo.ChargerSaveRequest,
+        requestOptions?: ChargePointsClient.RequestOptions,
+    ): core.HttpResponsePromise<Evcloud.ChargerSaveOut> {
+        return core.HttpResponsePromise.fromPromise(this.__save(request, requestOptions));
+    }
+
+    private async __save(
+        request: Evcloud.cpo.ChargerSaveRequest,
+        requestOptions?: ChargePointsClient.RequestOptions,
+    ): Promise<core.WithRawResponse<Evcloud.ChargerSaveOut>> {
+        const { charge_point_id: chargePointId, "Idempotency-Key": idempotencyKey, ..._body } = request;
+        const _authRequest: core.AuthRequest = await this._options.authProvider.getAuthRequest();
+        const _headers: core.Fetcher.Args["headers"] = mergeHeaders(
+            _authRequest.headers,
+            this._options?.headers,
+            mergeOnlyDefinedHeaders({ "Idempotency-Key": idempotencyKey ?? undefined }),
+            requestOptions?.headers,
+        );
+        const _response = await core.fetcher({
+            url: core.url.join(
+                (await core.Supplier.get(this._options.baseUrl)) ??
+                    (await core.Supplier.get(this._options.environment)) ??
+                    environments.EvcloudEnvironment.Production,
+                `cpo/charge-points/${core.url.encodePathParam(chargePointId)}/save`,
+            ),
+            method: "POST",
+            headers: _headers,
+            contentType: "application/json",
+            queryString: core.url.queryBuilder().mergeAdditional(requestOptions?.queryParams).build(),
+            requestType: "json",
+            body: mergeAdditionalBodyParameters(_body, requestOptions?.additionalBodyParameters),
+            timeoutMs: (requestOptions?.timeoutInSeconds ?? this._options?.timeoutInSeconds ?? 60) * 1000,
+            maxRetries: 0,
+            abortSignal: requestOptions?.abortSignal,
+            fetchFn: this._options?.fetch,
+            logging: this._options.logging,
+        });
+        if (_response.ok) {
+            return { data: _response.body as Evcloud.ChargerSaveOut, rawResponse: _response.rawResponse };
+        }
+
+        if (_response.error.reason === "status-code") {
+            switch (_response.error.statusCode) {
+                case 401:
+                    throw new Evcloud.UnauthorizedError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 403:
+                    throw new Evcloud.ForbiddenError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 404:
+                    throw new Evcloud.NotFoundError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 409:
+                    throw new Evcloud.ConflictError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 422:
+                    throw new Evcloud.UnprocessableEntityError(
+                        _response.error.body as Evcloud.HttpValidationError,
+                        _response.rawResponse,
+                    );
+                case 429:
+                    throw new Evcloud.TooManyRequestsError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 502:
+                    throw new Evcloud.BadGatewayError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                case 504:
+                    throw new Evcloud.GatewayTimeoutError(
+                        _response.error.body as Evcloud.HttpErrorResponse,
+                        _response.rawResponse,
+                    );
+                default:
+                    throw new errors.EvcloudError({
+                        statusCode: _response.error.statusCode,
+                        body: _response.error.body,
+                        rawResponse: _response.rawResponse,
+                    });
+            }
+        }
+
+        return handleNonStatusCodeError(
+            _response.error,
+            _response.rawResponse,
+            "POST",
+            "/cpo/charge-points/{charge_point_id}/save",
         );
     }
 

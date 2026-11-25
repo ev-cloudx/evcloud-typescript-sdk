@@ -31,6 +31,7 @@ export namespace ControlRequestResponse {
               | "CHARGING_STATION_OFFLINE"
               | "CHARGING_STATION_NOT_RESPONSIVE"
               | "INTERNAL_ERROR"
+              | "CANCELLED"
           )
         | unknown;
 }

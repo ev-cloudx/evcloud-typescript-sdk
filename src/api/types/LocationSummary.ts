@@ -16,7 +16,7 @@ export interface LocationSummary {
     country?: (string | null) | undefined;
     latitude?: (number | null) | undefined;
     longitude?: (number | null) | undefined;
-    source: string;
+    source: LocationSummary.Source;
     evse_count: number;
     available_count: number;
     max_power_kw?: (number | null) | undefined;
@@ -27,4 +27,8 @@ export interface LocationSummary {
     ocpi?: (Evcloud.LocationBase | null) | undefined;
     /** Accepts any additional properties */
     [key: string]: any;
+}
+
+export namespace LocationSummary {
+    export type Source = ("OWN_OCPP" | "PARTNER_OCPI") | unknown;
 }
